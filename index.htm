@@ -2,9 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Sagnik's Dynamic Calculator</title>
+    <title>HyperMathix - Scientific Calculator</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -12,31 +11,194 @@
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   </head>
   <body>
-    <div id="calculator">
-      <div class="display">0</div>
-      <div class="buttons">
-        <button class="operator" value="clear">C</button>
-        <button class="operator" value="backspace">&larr;</button>
-        <button class="operator" value="%">%</button>
-        <button class="operator" value="/">&divide;</button>
-        <button value="9">9</button>
-        <button value="8">8</button>
-        <button value="7">7</button>
-        <button class="operator" value="*">&times;</button>
-        <button value="6">6</button>
-        <button value="5">5</button>
-        <button value="4">4</button>
-        <button class="operator" value="-">-</button>
-        <button value="3">3</button>
-        <button value="2">2</button>
-        <button value="1">1</button>
-        <button class="operator" value="+">+</button>
-        <button class="operator" value="+/-">&plusmn;</button>
-        <button value="0">0</button>
-        <button class="operator" value=".">.</button>
-        <button class="operator" value="=">=</button>
+    <div class="container">
+      <h1 class="title">HyperMathix</h1>
+      <div id="calculator">
+        <div class="display-section">
+          <div class="expression-display" id="expression">0</div>
+          <div class="result-display" id="result">0</div>
+        </div>
+        
+        <div class="controls">
+          <button class="control-btn" id="stepByStep" title="Toggle Step-by-Step">
+            <i class="fas fa-list-ol"></i>
+          </button>
+          <button class="control-btn" id="toggleAdvanced" title="Toggle Advanced Functions">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="control-btn" id="toggleScientific" title="Toggle Scientific Functions">
+            <i class="fas fa-calculator"></i>
+          </button>
+          <button class="control-btn" id="toggleStats" title="Toggle Statistics">
+            <i class="fas fa-chart-bar"></i>
+          </button>
+          <button class="control-btn" id="toggleMemory" title="Toggle Memory & Conversion">
+            <i class="fas fa-memory"></i>
+          </button>
+          <button class="control-btn" id="history" title="History">
+            <i class="fas fa-history"></i>
+          </button>
+        </div>
+
+        <div class="buttons-container">
+          <!-- Advanced Functions Panel -->
+          <div class="advanced-panel" id="advancedPanel">
+            <!-- First Row - Calculation & Solve Functions -->
+            <button class="function-btn" data-function="solve" title="Solve Equations">SOLVE</button>
+            <button class="function-btn" data-function="calc" title="Calculate">CALC</button>
+            <button class="function-btn" data-function="integral" title="Integration">∫dx</button>
+            <button class="function-btn" data-function="derivative" title="Derivative">d/dx</button>
+            
+            <!-- Second Row - Advanced Math -->
+            <button class="function-btn" data-function="abs" title="Absolute Value">|x|</button>
+            <button class="function-btn" data-function="sqrt" title="Square Root">√</button>
+            <button class="function-btn" data-function="cbrt" title="Cube Root">∛</button>
+            <button class="function-btn" data-function="nroot" title="nth Root">ⁿ√</button>
+            
+            <!-- Third Row - Powers & Logs -->
+            <button class="function-btn" data-function="pow2" title="Square">x²</button>
+            <button class="function-btn" data-function="pow3" title="Cube">x³</button>
+            <button class="function-btn" data-function="powxy" title="Power">x^y</button>
+            <button class="function-btn" data-function="pow10" title="10^x">10^x</button>
+            
+            <!-- Fourth Row - Logarithms -->
+            <button class="function-btn" data-function="log" title="Log base 10">log</button>
+            <button class="function-btn" data-function="ln" title="Natural Log">ln</button>
+            <button class="function-btn" data-function="exp" title="e^x">e^x</button>
+            <button class="function-btn" data-function="logab" title="Log base a">log_a(b)</button>
+          </div>
+
+          <!-- Scientific Functions Panel -->
+          <div class="scientific-panel" id="scientificPanel">
+            <!-- Trigonometric Functions -->
+            <button class="function-btn" data-function="sin" title="Sine">sin</button>
+            <button class="function-btn" data-function="cos" title="Cosine">cos</button>
+            <button class="function-btn" data-function="tan" title="Tangent">tan</button>
+            <button class="function-btn" data-function="asin" title="Arc Sine">sin⁻¹</button>
+            
+            <button class="function-btn" data-function="acos" title="Arc Cosine">cos⁻¹</button>
+            <button class="function-btn" data-function="atan" title="Arc Tangent">tan⁻¹</button>
+            <button class="function-btn" data-function="sinh" title="Hyperbolic Sine">sinh</button>
+            <button class="function-btn" data-function="cosh" title="Hyperbolic Cosine">cosh</button>
+            
+            <button class="function-btn" data-function="tanh" title="Hyperbolic Tangent">tanh</button>
+            <button class="function-btn" data-function="asinh" title="Inverse Hyperbolic Sine">sinh⁻¹</button>
+            <button class="function-btn" data-function="acosh" title="Inverse Hyperbolic Cosine">cosh⁻¹</button>
+            <button class="function-btn" data-function="atanh" title="Inverse Hyperbolic Tangent">tanh⁻¹</button>
+          </div>
+
+          <!-- Statistics & Probability Panel -->
+          <div class="stats-panel" id="statsPanel">
+            <!-- Statistics Functions -->
+            <button class="function-btn" data-function="ncr" title="Combinations">nCr</button>
+            <button class="function-btn" data-function="npr" title="Permutations">nPr</button>
+            <button class="function-btn" data-function="factorial" title="Factorial">x!</button>
+            <button class="function-btn" data-function="random" title="Random">Ran#</button>
+            
+            <!-- Number Base Conversion -->
+            <button class="function-btn" data-function="dec" title="Decimal">DEC</button>
+            <button class="function-btn" data-function="hex" title="Hexadecimal">HEX</button>
+            <button class="function-btn" data-function="bin" title="Binary">BIN</button>
+            <button class="function-btn" data-function="oct" title="Octal">OCT</button>
+            
+            <!-- Constants -->
+            <button class="function-btn" data-function="pi" title="Pi">π</button>
+            <button class="function-btn" data-function="e" title="Euler's number">e</button>
+            <button class="function-btn" data-function="deg" title="Degrees">°</button>
+            <button class="function-btn" data-function="percent" title="Percentage">%</button>
+          </div>
+
+          <!-- Memory & Conversion Panel -->
+          <div class="memory-panel" id="memoryPanel">
+            <!-- Memory Functions -->
+            <button class="function-btn memory" data-function="ms" title="Memory Store">MS</button>
+            <button class="function-btn memory" data-function="mr" title="Memory Recall">MR</button>
+            <button class="function-btn memory" data-function="mplus" title="Memory Plus">M+</button>
+            <button class="function-btn memory" data-function="mminus" title="Memory Minus">M-</button>
+            
+            <!-- Unit Conversion -->
+            <button class="function-btn" data-function="pol" title="Polar Coordinates">Pol</button>
+            <button class="function-btn" data-function="rec" title="Rectangular Coordinates">Rec</button>
+            <button class="function-btn" data-function="dms" title="Degrees Minutes Seconds">D°M'S"</button>
+            <button class="function-btn" data-function="sdp" title="Standard Deviation Population">σ</button>
+            
+            <!-- Matrix Functions -->
+            <button class="function-btn" data-function="matrix" title="Matrix">MATRIX</button>
+            <button class="function-btn" data-function="vector" title="Vector">VECTOR</button>
+            <button class="function-btn" data-function="cmplx" title="Complex Numbers">CMPLX</button>
+            <button class="function-btn" data-function="base" title="Base Conversion">BASE</button>
+          </div>
+
+          <!-- Main Calculator Buttons -->
+          <div class="main-buttons">
+            <!-- Top Row - Control Functions -->
+            <button class="operator special" data-action="shift" title="Shift">SHIFT</button>
+            <button class="operator special" data-action="alpha" title="Alpha">ALPHA</button>
+            <button class="operator special" data-action="mode" title="Mode Setup">MODE</button>
+            <button class="operator clear" data-action="clear" title="All Clear">AC</button>
+            
+            <!-- Second Row -->
+            <button class="operator" data-action="del" title="Delete">DEL</button>
+            <button class="operator" data-action="ans" title="Answer">Ans</button>
+            <button class="operator" data-action="parentheses" title="Parentheses">()</button>
+            <button class="operator" data-action="divide" title="Divide">÷</button>
+            
+            <!-- Numbers and Operations -->
+            <button class="number" data-number="7">7</button>
+            <button class="number" data-number="8">8</button>
+            <button class="number" data-number="9">9</button>
+            <button class="operator" data-action="multiply" title="Multiply">×</button>
+            
+            <button class="number" data-number="4">4</button>
+            <button class="number" data-number="5">5</button>
+            <button class="number" data-number="6">6</button>
+            <button class="operator" data-action="subtract" title="Subtract">−</button>
+            
+            <button class="number" data-number="1">1</button>
+            <button class="number" data-number="2">2</button>
+            <button class="number" data-number="3">3</button>
+            <button class="operator" data-action="add" title="Add">+</button>
+            
+            <!-- Bottom Row -->
+            <button class="operator" data-action="sign" title="Change Sign">±</button>
+            <button class="number zero" data-number="0">0</button>
+            <button class="operator" data-action="decimal" title="Decimal Point">.</button>
+            <button class="operator equals" data-action="equals" title="Equals">=</button>
+            
+            <!-- Additional Functions Row -->
+            <button class="operator" data-action="comma" title="Comma">,</button>
+            <button class="operator" data-action="exp10" title="×10^x">×10^x</button>
+            <button class="operator" data-action="eng" title="Engineering Notation">ENG</button>
+            <button class="operator" data-action="ans" title="Last Answer">ANS</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Panel -->
+      <div class="steps-panel" id="stepsPanel">
+        <div class="steps-header">
+          <h3>Step-by-Step Solution</h3>
+          <button class="close-btn" id="closeSteps">×</button>
+        </div>
+        <div class="steps-content" id="stepsContent">
+          <p>Enable step-by-step mode and perform a calculation to see the solution process.</p>
+        </div>
+      </div>
+
+      <!-- History Panel -->
+      <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+          <h3>History</h3>
+          <button class="close-btn" id="closeHistory">×</button>
+        </div>
+        <div class="history-content" id="historyContent">
+          <p>No calculations yet.</p>
+        </div>
       </div>
     </div>
   </body>
