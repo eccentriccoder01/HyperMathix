@@ -1,4 +1,83 @@
-// Equation solver specific functionality
+// equations.js - Equation Solving Module
+
+// Extend the ScientificCalculator class with equation solving methods
+ScientificCalculator.prototype.solveLinearEquation = function(a, b) {
+  // Solve ax + b = 0
+  if (a === 0) {
+    return b === 0 ? 'Infinite solutions' : 'No solution';
+  }
+  return -b / a;
+};
+
+ScientificCalculator.prototype.solveQuadraticEquation = function(a, b, c) {
+  // Solve ax² + bx + c = 0
+  if (a === 0) {
+    return this.solveLinearEquation(b, c);
+  }
+  
+  const discriminant = b * b - 4 * a * c;
+  
+  if (discriminant < 0) {
+    return 'No real solutions';
+  } else if (discriminant === 0) {
+    return -b / (2 * a);
+  } else {
+    const sqrt_discriminant = Math.sqrt(discriminant);
+    return [
+      (-b + sqrt_discriminant) / (2 * a),
+      (-b - sqrt_discriminant) / (2 * a)
+    ];
+  }
+};
+
+ScientificCalculator.prototype.parseEquation = function(equationString) {
+  // Parse equation string and extract coefficients
+  const parts = equationString.split('=');
+  if (parts.length !== 2) {
+    throw new Error('Invalid equation format');
+  }
+  
+  const leftSide = this.extractCoefficients(parts[0]);
+  const rightSide = this.extractCoefficients(parts[1]);
+  
+  const coefficients = {};
+  for (const [variable, coeff] of Object.entries(leftSide)) {
+    coefficients[variable] = coeff - (rightSide[variable] || 0);
+  }
+  for (const [variable, coeff] of Object.entries(rightSide)) {
+    if (!coefficients[variable]) {
+      coefficients[variable] = -coeff;
+    }
+  }
+  
+  return coefficients;
+};
+
+ScientificCalculator.prototype.extractCoefficients = function(expression) {
+  const coefficients = {};
+  expression = expression.replace(/\s/g, '');
+  
+  const terms = expression.split(/(?=[+-])/).filter(term => term !== '');
+  
+  for (const term of terms) {
+    const match = term.match(/([+-]?\d*\.?\d*)([a-zA-Z]*)(\^?\d*)/);
+    if (match) {
+      let coeff = match[1] || '1';
+      const variable = match[2] || 'constant';
+      const power = match[3] ? parseInt(match[3].substring(1)) : (variable ? 1 : 0);
+      
+      if (coeff === '+' || coeff === '') coeff = '1';
+      if (coeff === '-') coeff = '-1';
+      
+      const key = variable + (power > 1 ? `^${power}` : '');
+      coefficients[key] = (coefficients[key] || 0) + parseFloat(coeff);
+    }
+  }
+  
+  return coefficients;
+};
+
+// Legacy equation solver functions for backward compatibility
 function normalizeExponents(expr) {
     return expr
       .replace(/x²/g, 'x^2')
@@ -162,3 +241,19 @@ function solveEquation(expr) {
       updateDisplay();
     });
   });
+  
+  ScientificCalculator.prototype.openEquationSolver = function() {
+    const equation = prompt('Enter equation to solve (format: ax+b=0 or ax²+bx+c=0):');
+    if (equation) {
+      try {
+        const result = this.parseEquation(equation);
+        if (result) {
+          this.currentExpression = result.toString();
+          this.updateDisplay();
+          this.showMessage('Equation solved');
+        }
+      } catch (error) {
+        this.showMessage('Invalid equation format');
+      }
+    }
+  };

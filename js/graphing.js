@@ -1,13 +1,78 @@
+// graphing.js - Graphing and Visualization Module
+
+// Extend the ScientificCalculator class with graphing methods
+ScientificCalculator.prototype.initializeGraph = function() {
+  this.graphCanvas = document.getElementById('graphCanvas') || document.getElementById('graph-canvas');
+  this.graphContext = this.graphCanvas ? this.graphCanvas.getContext('2d') : null;
+  this.graphSettings = {
+    xMin: -10,
+    xMax: 10,
+    yMin: -10,
+    yMax: 10,
+    gridSize: 1,
+    showGrid: true,
+    showAxes: true
+  };
+};
+
+ScientificCalculator.prototype.plotFunction = function(functionString, color = '#667eea') {
+  if (!this.graphContext) {
+    this.showMessage('Graph canvas not available');
+    return;
+  }
+  
+  try {
+    const func = this.parseFunction(functionString);
+    this.drawGraph(func, color);
+    this.showMessage(`Function ${functionString} plotted`);
+  } catch (error) {
+    this.showMessage('Error plotting function');
+    console.error('Plotting error:', error);
+  }
+};
+
+ScientificCalculator.prototype.parseFunction = function(functionString) {
+  let processedFunction = functionString
+    .replace(/sin/g, 'Math.sin')
+    .replace(/cos/g, 'Math.cos')
+    .replace(/tan/g, 'Math.tan')
+    .replace(/ln/g, 'Math.log')
+    .replace(/log/g, 'Math.log10')
+    .replace(/sqrt/g, 'Math.sqrt')
+    .replace(/abs/g, 'Math.abs')
+    .replace(/exp/g, 'Math.exp')
+    .replace(/π/g, 'Math.PI')
+    .replace(/\be\b/g, 'Math.E')
+    .replace(/\^/g, '**');
+  
+  return new Function('x', `return ${processedFunction}`);
+};
+
+ScientificCalculator.prototype.xToCanvas = function(x) {
+  const { xMin, xMax } = this.graphSettings;
+  return ((x - xMin) / (xMax - xMin)) * this.graphCanvas.width;
+};
+
+ScientificCalculator.prototype.yToCanvas = function(y) {
+  const { yMin, yMax } = this.graphSettings;
+  return this.graphCanvas.height - ((y - yMin) / (yMax - yMin)) * this.graphCanvas.height;
+};
+
+// Legacy graphing code for backward compatibility
 const canvas = document.getElementById('graph-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 
 // Resize canvas dynamically
 function resizeCanvas() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  if (canvas) {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+  }
 }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+}
 
 // Graph state
 let graphExpr = '';

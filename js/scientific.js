@@ -1,285 +1,243 @@
-// scientific.js - Final Version
-// Arithmetic mode specific functionality
+ScientificCalculator.prototype.addTrigFunction = function(func) {
+  // Check if shift is active to use inverse functions
+  let actualFunc = func;
+  if (this.isShiftActive) {
+    const inverseMap = {
+      'sin': 'asin', 'cos': 'acos', 'tan': 'atan',
+      'sinh': 'asinh', 'cosh': 'acosh', 'tanh': 'atanh'
+    };
+    actualFunc = inverseMap[func] || func;
+    // Turn off shift after using inverse function
+    this.isShiftActive = false;
+    this.updateShiftedButtons();
+    const shiftBtn = document.querySelector('[data-action="shift"]');
+    if (shiftBtn) shiftBtn.classList.remove('active');
+  }
+  
+  if (this.currentExpression === '0' || this.currentExpression === 'Error') {
+    this.currentExpression = actualFunc + '(';
+  } else {
+    this.currentExpression += actualFunc + '(';
+  }
+  this.openParentheses++;
+  this.updateDisplay();
+};
 
-function parseExpression(expr) {
-    let parsed = expr
-        // Step 1: Replace common operators to internal JS operators
-        .replace(/÷/g, '/')
-        .replace(/×/g, '*');
+ScientificCalculator.prototype.addLogFunction = function(func) {
+  if (func === 'logab') {
+    this.addFunction('log');
+    this.addOperator(',');
+  } else {
+    this.addFunction(func);
+  }
+};
 
-    // Step 2: Convert numbers followed by 'i' to new Complex(0, number)
-    // E.g., "5i", "-3.2i" -> "new Complex(0,5)", "new Complex(0,-3.2)"
-    // This is applied *before* implicit multiplication
-    parsed = parsed.replace(/([+-]?\d+\.?\d*(?:[eE][+-]?\d+)?)\s*i/g, 'new Complex(0,$1)');
+ScientificCalculator.prototype.addRootFunction = function(func) {
+  switch (func) {
+    case 'sqrt':
+      this.addFunction('sqrt');
+      break;
+    case 'cbrt':
+      this.addFunction('cbrt');
+      break;
+    case 'nroot':
+      this.addFunction('nroot');
+      break;
+  }
+};
 
-    // Step 3: Convert lone 'i' to new Complex(0,1)
-    // Ensure 'i' is not part of another word or number
-    parsed = parsed.replace(/(?<![a-zA-Z0-9_\.])i(?![\d\.a-zA-Z])/g, 'new Complex(0,1)');
+ScientificCalculator.prototype.addPowerFunction = function(func) {
+  switch (func) {
+    case 'pow2':
+      this.addOperator('^2');
+      break;
+    case 'pow3':
+      this.addOperator('^3');
+      break;
+    case 'powxy':
+      this.addOperator('^');
+      break;
+    case 'pow10':
+      this.currentExpression += '10^';
+      break;
+  }
+  this.updateDisplay();
+};
 
-    // Step 4: Handle implicit multiplication - This is the most crucial and tricky part
-    // We need to insert '*' in various scenarios:
-    // A. Number/closing parenthesis/complex object/function call followed by opening parenthesis
-    //    e.g., 2(x+y), (x+y)(a+b), Complex(..)(a+b), sin(x)(a+b)
-    // B. Number/closing parenthesis/function call followed by a 'new Complex(...)' object
-    //    e.g., 2new Complex(...), (x+y)new Complex(...), sin(x)new Complex(...)
-    // C. 'new Complex(...)' followed by a number or function call
-    //    e.g., new Complex(...)2, new Complex(...)sin(x)
+ScientificCalculator.prototype.addFunction = function(func) {
+  if (this.currentExpression === '0' || this.currentExpression === 'Error') {
+    this.currentExpression = func + '(';
+  } else {
+    this.currentExpression += func + '(';
+  }
+  this.openParentheses++;
+  this.updateDisplay();
+};
 
-    // Regex for patterns that could end a term (left side of implicit multiplication)
-    const endOfTerm = `((?:\\d+(?:\\.\\d*)?(?:[eE][+-]?\\d+)?|\\)|\\bnew Complex\\([^)]*\\)|\\b[a-zA-Z_]\\w*\\([^)]*\\)))`;
-    // Regex for patterns that could start a term (right side of implicit multiplication)
-    const startOfTerm = `((\\(|\\bnew Complex\\([^)]*\\)|\\b[a-zA-Z_]\\w*\\(|\\d+(?:\\.\\d*)?(?:[eE][+-]?\\d+)?))`;
+// Number base functions
+ScientificCalculator.prototype.setNumberBase = function(base) {
+  this.numberBase = base;
+  this.showMessage(`Number base: ${base.toUpperCase()}`);
+  try {
+    const result = this.evaluateExpression(this.currentExpression);
+    if (isFinite(result) && !isNaN(result)) {
+      this.currentExpression = this.convertToBase(result, base);
+      this.updateDisplay();
+    }
+  } catch (error) {
+    // Ignore conversion errors for invalid expressions
+    console.warn('Base conversion failed:', error.message);
+  }
+};
 
-    // Apply implicit multiplication rules. Order matters for overlapping patterns.
-    // Generally, apply patterns that are more specific or might create new tokens first.
+ScientificCalculator.prototype.convertToBase = function(decimal, base) {
+  const num = Math.floor(decimal);
+  switch (base) {
+    case 'bin': return '0b' + num.toString(2);
+    case 'oct': return '0o' + num.toString(8);
+    case 'hex': return '0x' + num.toString(16).toUpperCase();
+    default: return num.toString();
+  }
+};
 
-    // Scenario 1: Number immediately followed by '(' or a function call
-    // e.g., 2(x+y) -> 2*(x+y)
-    parsed = parsed.replace(/(\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)\s*(\(|\b[a-zA-Z_]\w+\()/g, '$1*$2');
+// Calculation and evaluation functions
+ScientificCalculator.prototype.calculate = function() {
+  try {
+    const steps = [];
+    let expression = this.currentExpression;
+    
+    while (this.openParentheses > 0) {
+      expression += ')';
+      this.openParentheses--;
+    }
 
-    // Scenario 2: Number immediately followed by 'new Complex(...)'
-    // e.g., 4new Complex(0,3) -> 4*new Complex(0,3)
-    parsed = parsed.replace(/(\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)\s*(\bnew Complex\([^)]*\))/g, '$1*$2');
+    if (this.isStepByStepMode) {
+      const result = this.calculateWithSteps(expression, steps);
+      this.showSteps(steps, expression, result);
+      this.lastResult = result.toString();
+      this.answerValue = this.lastResult;
+    } else {
+      const result = this.evaluateExpression(expression);
+      this.lastResult = result.toString();
+      this.answerValue = this.lastResult;
+    }
 
-    // Scenario 3: Closing parenthesis ')' immediately followed by number, '(', 'new Complex', or function call
-    // e.g., (x+y)2, (x+y)(a+b), (x+y)new Complex(...), (x+y)sin(z)
-    parsed = parsed.replace(/(\))\s*(\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|\(|\bnew Complex\([^)]*\)|\b[a-zA-Z_]\w+\()/g, '$1*$2');
+    this.addToHistory(expression, this.lastResult);
+    this.currentExpression = this.lastResult;
+    this.updateDisplay();
+  } catch (error) {
+    this.currentExpression = 'Error';
+    this.updateDisplay();
+  }
+};
 
-    // Scenario 4: 'new Complex(...)' immediately followed by number, '(', 'new Complex', or function call
-    // e.g., (2+i)3, (2+i)(a+b), (2+i)new Complex(...), (2+i)sin(z)
-    parsed = parsed.replace(/(\bnew Complex\([^)]*\))\s*(\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|\(|\bnew Complex\([^)]*\)|\b[a-zA-Z_]\w+\()/g, '$1*$2');
+ScientificCalculator.prototype.evaluateExpression = function(expression) {
+  try {
+    let processedExpression = expression
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/−/g, '-')
+      .replace(/π/g, Math.PI.toString())
+      .replace(/\be\b/g, Math.E.toString())
+      .replace(/×10\^/g, '*Math.pow(10,')
+      .replace(/%/g, '/100')
+      .replace(/°/g, '*Math.PI/180');
 
-    // Scenario 5: Function call immediately followed by number, '(', 'new Complex', or another function call
-    // e.g., sin(x)2, sin(x)(y+z), sin(x)new Complex(...), sin(x)cos(y)
-    parsed = parsed.replace(/(\b[a-zA-Z_]\w+\([^)]*\))\s*(\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|\(|\bnew Complex\([^)]*\)|\b[a-zA-Z_]\w+\()/g, '$1*$2');
+    // Handle functions with safer evaluation
+    processedExpression = processedExpression
+      .replace(/sin\(([^)]+)\)/g, (match, p1) => this.calculateTrig('sin', p1))
+      .replace(/cos\(([^)]+)\)/g, (match, p1) => this.calculateTrig('cos', p1))
+      .replace(/tan\(([^)]+)\)/g, (match, p1) => this.calculateTrig('tan', p1))
+      .replace(/ln\(([^)]+)\)/g, (match, p1) => Math.log(this.safeEval(p1)))
+      .replace(/log\(([^)]+)\)/g, (match, p1) => Math.log10(this.safeEval(p1)))
+      .replace(/sqrt\(([^)]+)\)/g, (match, p1) => Math.sqrt(this.safeEval(p1)))
+      .replace(/abs\(([^)]+)\)/g, (match, p1) => Math.abs(this.safeEval(p1)))
+      .replace(/exp\(([^)]+)\)/g, (match, p1) => Math.exp(this.safeEval(p1)))
+      .replace(/(\d+)!/g, (match, p1) => this.factorial(parseInt(p1)))
+      .replace(/(\d+(\.\d+)?)\^(\d+(\.\d+)?)/g, (match, base, _, exponent) => Math.pow(parseFloat(base), parseFloat(exponent)))
+      .replace(/(\d+(\.\d+)?)\^2/g, (match, base) => Math.pow(parseFloat(base), 2))
+      .replace(/(\d+(\.\d+)?)\^3/g, (match, base) => Math.pow(parseFloat(base), 3));
 
+    return Function('"use strict"; return (' + processedExpression + ')')();
+  } catch (error) {
+    return NaN;
+  }
+};
 
-    // Step 5: Convert power operator (^) to pow(base, exponent) function calls
-    // Base/Exponent can be a number, 'new Complex(...)', or a parenthesized expression.
-    // This needs to be applied after implicit multiplication.
-    parsed = parsed.replace(
-        /((?:(?:\\d+(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)|(?:\\bnew Complex\\([^)]*\\))|(?:\\b[a-zA-Z_]\\w*\\([^)]*\\))|\\([^()]*?\\)))\\s*\\^((?:(?:\\d+(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)|(?:\\bnew Complex\\([^)]*\\))|(?:\\b[a-zA-Z_]\\w*\\([^)]*\\))|\\([^()]*?\\)))/g,
-        'pow($1,$2)'
-    );
+ScientificCalculator.prototype.safeEval = function(expression) {
+  try {
+    // Simple evaluation without recursion for nested functions
+    let processedExpression = expression
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/−/g, '-')
+      .replace(/π/g, Math.PI.toString())
+      .replace(/\be\b/g, Math.E.toString())
+      .replace(/×10\^/g, '*Math.pow(10,')
+      .replace(/%/g, '/100')
+      .replace(/°/g, '*Math.PI/180');
 
+    return Function('"use strict"; return (' + processedExpression + ')')();
+  } catch (error) {
+    return parseFloat(expression) || 0;
+  }
+};
 
-    // Step 6: Replace function names with our custom wrappers
-    // IMPORTANT: Order matters here, longer names first, then shorter, to avoid partial matches.
-    parsed = parsed
-        .replace(/sin\u207B\u00B9/g, 'asin')
-        .replace(/cos\u207B\u00B9/g, 'acos')
-        .replace(/tan\u207B\u00B9/g, 'atan')
-        .replace(/\bAbs\(/g, 'abs(')
-        .replace(/\bArg\(/g, 'arg(')
-        .replace(/\bConj\(/g, 'conj(')
-        .replace(/\bln\b/g, 'log') // natural log (mapped to 'log' in core.js)
-        .replace(/\blog\b/g, 'log10') // common log (mapped to 'log10' in core.js)
-        .replace(/√/g, 'sqrt')
-        .replace(/\bsin\b/g, 'sin')
-        .replace(/\bcos\b/g, 'cos')
-        .replace(/\btan\b/g, 'tan');
+ScientificCalculator.prototype.calculateTrig = function(func, value) {
+  const val = this.safeEval(value);
+  const radians = this.angleMode === 'deg' ? val * Math.PI / 180 : val;
+  switch (func) {
+    case 'sin': return Math.sin(radians);
+    case 'cos': return Math.cos(radians);
+    case 'tan': return Math.tan(radians);
+    default: return val;
+  }
+};
 
-    // Step 7: Explicitly wrap arithmetic operations for Complex numbers using the global helper functions.
-    // This is applied in order of precedence: mul/div first, then add/sub.
-    // The operand pattern needs to be robust enough to capture full terms (numbers, new Complex, function calls, parenthesized expressions).
-    // Using a non-greedy `.*?` for parenthesized expressions helps.
+ScientificCalculator.prototype.factorial = function(n) {
+  if (n < 0) return NaN;
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) {
+    result *= i;
+  }
+  return result;
+};
 
-    const strictOperandPattern = `((?:(?:\\d+(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)|(?:\\bnew Complex\\([^)]*\\))|(?:\\b[a-zA-Z_]\\w*\\([^)]*\\))|\\([^()]*?\\)))`;
+ScientificCalculator.prototype.calculateWithSteps = function(expression, steps) {
+  steps.push({
+    step: 1,
+    description: "Original expression",
+    calculation: expression
+  });
 
-    // Multiplication and Division (higher precedence)
-    // Replace all occurrences using global flag
-    parsed = parsed.replace(new RegExp(`${strictOperandPattern}\\s*\\*\\s*${strictOperandPattern}`, 'g'), `mul($1,$2)`);
-    parsed = parsed.replace(new RegExp(`${strictOperandPattern}\\s*\\/\\s*${strictOperandPattern}`, 'g'), `div($1,$2)`);
+  let workingExpression = expression;
+  let stepNumber = 2;
 
-    // Addition and Subtraction (lower precedence)
-    // Replace all occurrences using global flag
-    parsed = parsed.replace(new RegExp(`${strictOperandPattern}\\s*\\+\\s*${strictOperandPattern}`, 'g'), `add($1,$2)`);
-    parsed = parsed.replace(new RegExp(`${strictOperandPattern}\\s*\\-\\s*${strictOperandPattern}`, 'g'), `sub($1,$2)`);
-
-    return parsed;
-}
-
-// Ensure the calculator element is ready before attaching event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('#scientific-mode button').forEach(button => {
-        button.addEventListener("click", function() {
-            const value = this.value;
-
-            if (value === "clear") {
-                currentExpression = "0";
-                cursorPosition = 0;
-            } else if (value === "backspace") {
-                if (cursorPosition > 0) {
-                    currentExpression = currentExpression.slice(0, cursorPosition - 1) + currentExpression.slice(cursorPosition);
-                    cursorPosition--;
-                }
-                if (currentExpression === "") currentExpression = "0";
-            } else if (value === "solve") {
-                try {
-                    const parsedExpr = parseExpression(currentExpression);
-                    console.log("Parsed expression:", parsedExpr); // Keep for debugging!
-                    const result = eval(parsedExpr);
-
-                    // Added verbose logging for debugging complex results
-                    console.log("Evaluated Result Object:", result);
-                    console.log("Result type:", typeof result);
-                    console.log("Result instanceof Complex:", result instanceof Complex);
-                    if (result instanceof Complex) {
-                        console.log("Result Real:", result.real, "Imag:", result.imag);
-                    }
-
-                    // Handle result display for complex numbers and potential NaN cases
-                    if (result instanceof Complex) {
-                        currentExpression = result.toString();
-                    } else if (typeof result === 'number' && isNaN(result)) {
-                        currentExpression = "Error"; // Or "NaN" if you prefer
-                    } else if (typeof result === 'number' && !isFinite(result)) { // Handle Infinity
-                        currentExpression = "Infinity";
-                    }
-                    else {
-                        currentExpression = result.toString();
-                    }
-                    cursorPosition = currentExpression.length;
-                } catch (error) {
-                    console.error("Evaluation Error:", error); // Log the actual error for debugging
-                    currentExpression = "Error";
-                    cursorPosition = currentExpression.length;
-                }
-            } else if (value === "sqrt") {
-                currentExpression = insertAtCursor("√(");
-                cursorPosition += 2;
-            } else if (value === "log" || value === "ln") {
-                currentExpression = insertAtCursor(`${value}(`);
-                cursorPosition += value.length + 1;
-            } else if (value === "sin" || value === "cos" || value === "tan" ||
-                       value === "sin⁻¹" || value === "cos⁻¹" || value === "tan⁻¹") {
-                let funcName = value;
-                if (value === "sin⁻¹") funcName = "asin";
-                else if (value === "cos⁻¹") funcName = "acos";
-                else if (value === "tan⁻¹") funcName = "atan";
-
-                currentExpression = insertAtCursor(`${funcName}(`); // Insert the correct function name
-                cursorPosition += funcName.length + 1; // Adjust cursor position
-            } else if (value === "abs") {
-                currentExpression = insertAtCursor("Abs(");
-                cursorPosition += 4;
-            } else if (value === "arg") {
-                currentExpression = insertAtCursor("Arg(");
-                cursorPosition += 4;
-            } else if (value === "conj") {
-                currentExpression = insertAtCursor("Conj(");
-                cursorPosition += 5;
-            } else if (value === "i") {
-                currentExpression = insertAtCursor("i");
-                cursorPosition += 1;
-            } else if (value === "left") {
-                if (cursorPosition > 0) cursorPosition--;
-            } else if (value === "right") {
-                if (cursorPosition < currentExpression.length) cursorPosition++;
-            } else { // Generic character/number input
-                if (currentExpression === "0" && value !== '.') {
-                    currentExpression = value;
-                    cursorPosition = value.length; // Set cursor to end of new input
-                } else {
-                    currentExpression = insertAtCursor(value);
-                    cursorPosition += value.length;
-                }
-            }
-
-            updateDisplay();
-        });
+  if (workingExpression.includes('π')) {
+    workingExpression = workingExpression.replace(/π/g, Math.PI.toString());
+    steps.push({
+      step: stepNumber++,
+      description: "Replace π with its value",
+      calculation: workingExpression
     });
+  }
 
-    // --- Keyboard Input Handling ---
-    function handleKeyboardInput(event) {
-        const key = event.key;
+  if (workingExpression.includes('e')) {
+    workingExpression = workingExpression.replace(/\be\b/g, Math.E.toString());
+    steps.push({
+      step: stepNumber++,
+      description: "Replace e with its value",
+      calculation: workingExpression
+    });
+  }
 
-        if (
-            key === ' ' ||
-            key === 'Tab' ||
-            event.ctrlKey ||
-            event.altKey ||
-            event.metaKey
-        ) {
-            return;
-        }
+  const result = this.evaluateExpression(workingExpression);
+  steps.push({
+    step: stepNumber,
+    description: "Final result",
+    calculation: result.toString()
+  });
 
-        let buttonValue;
-        switch (key) {
-            case '0': case '1': case '2': case '3': case '4':
-            case '5': case '6': case '7': case '8': case '9':
-            case '.':
-                buttonValue = key;
-                break;
-            case '+': buttonValue = '+'; break;
-            case '-': buttonValue = '-'; break;
-            case '*': buttonValue = '×'; break; // Map to your display character
-            case '/': buttonValue = '÷'; break; // Map to your display character
-            case '^': buttonValue = '^'; break;
-            case 'Enter':
-                buttonValue = 'solve';
-                event.preventDefault();
-                break;
-            case 'Backspace': buttonValue = 'backspace'; break;
-            case 'Escape': buttonValue = 'clear'; break;
-            case 'i': buttonValue = 'i'; break;
-            case '(': buttonValue = '('; break;
-            case ')': buttonValue = ')'; break;
-            case 'ArrowLeft':
-                buttonValue = 'left';
-                event.preventDefault();
-                break;
-            case 'ArrowRight':
-                buttonValue = 'right';
-                event.preventDefault();
-                break;
-            default:
-                // For other valid input characters not mapped to specific buttons, allow direct insertion
-                if (
-                    (key >= '0' && key <= '9') ||
-                    key === '.' || key === '+' || key === '-' ||
-                    key === '*' || key === '/' || key === '(' ||
-                    key === ')' || key === 'i' || key === '^'
-                ) {
-                    if (currentExpression === "0" && key !== '.') {
-                        currentExpression = key;
-                        cursorPosition = 1;
-                    } else {
-                        currentExpression = insertAtCursor(key);
-                        cursorPosition += 1;
-                    }
-                    updateDisplay();
-                    return; // Handled, prevent default
-                }
-                return; // Ignore unhandled keys
-        }
-
-        const matchingButton = document.querySelector(`#scientific-mode button[value="${buttonValue}"]`);
-        if (matchingButton) {
-            matchingButton.click();
-        }
-    }
-
-    document.addEventListener('keydown', handleKeyboardInput);
-
-    function handlePaste(event) {
-        event.preventDefault();
-
-        const pastedText = (event.clipboardData || window.clipboardData).getData('text/plain');
-
-        if (pastedText) {
-            const validCharsRegex = /[^0-9+\-*/().i√^loglnsincostanAbsArgConj\s]/g;
-            const cleanedText = pastedText.replace(validCharsRegex, '');
-
-            if (currentExpression === "0") {
-                currentExpression = cleanedText;
-                cursorPosition = cleanedText.length;
-            } else {
-                currentExpression = insertAtCursor(cleanedText);
-                cursorPosition += cleanedText.length;
-            }
-            updateDisplay();
-        }
-    }
-    document.addEventListener('paste', handlePaste);
-});
+  return result;
+};

@@ -1,260 +1,258 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Sagnik's Dynamic Calculator</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="favicon/site.webmanifest">
-  <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="theme-color" content="#ffffff">
-</head>
-<body>
-  <div id="calculator">
-    <div class="mode-selector">
-      <button class="mode-btn active" data-mode="arithmetic">
-        <i class="fas fa-calculator"></i> Basic
-      </button>
-      <button class="mode-btn" data-mode="scientific">
-        <i class="fas fa-square-root-alt"></i> Scientific
-      </button>
-      <button class="mode-btn" data-mode="equations">
-        <i class="fas fa-equals"></i> Equations
-      </button>
-      <button class="mode-btn" data-mode="graphing">
-        <i class="fas fa-chart-line"></i> Graphing
-      </button>
-      <button class="mode-btn" data-mode="matrices">
-        <i class="fas fa-table"></i> Matrices
-      </button>
-    </div>
-    
-        <div class="display" id="display">0</div>
-    
-    <!-- Arithmetic Mode (Default) -->
-    <div class="calculator-mode active" id="arithmetic-mode">
-      <div class="buttons">
-        <button value="9">9</button>
-        <button value="8">8</button>
-        <button value="7">7</button>
-        <button value="6">6</button>
-        <button value="5">5</button>
-        <button value="4">4</button>
-        <button value="3">3</button>
-        <button value="2">2</button>
-        <button value="1">1</button>
-        <button value="x">x</button>
-        <button value="0">0</button>
-        <button value="i">i</button>
+  <head>
+    <meta charset="UTF-8">
+    <title>HyperMathix - Scientific Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">HyperMathix</h1>
+      <div id="calculator">
+        <div class="display-section">
+          <button class="settings-btn" id="settingsBtn" title="Settings">
+            <i class="fas fa-cog"></i>
+          </button>
+          <div class="expression-display" id="expression">0</div>
+          <div class="result-display" id="result">0</div>
+        </div>
         
-        <button class="operator" value="clear">C</button>
-        <button class="operator" value="backspace">&larr;</button>
-        <button class="operator" value="left">&larr;|</button>
-        <button class="operator" value="right">|&rarr;</button>
-        <button class="operator" value="(">(</button>
-        <button class="operator" value=")">)</button>
-        <button class="operator" value="%">%</button>
-        <button class="operator" value="/">÷</button>
-        <button class="operator" value="^">^</button>
-        <button class="operator" value="sqrt">√</button>
-        <button class="operator" value="log">log</button>
-        <button class="operator" value="ln">ln</button>
-        <button class="operator" value="*">×</button>
-        <button class="operator" value="-">-</button>
-        <button class="operator" value="+">+</button>
-        <button class="operator" value="abs">Abs</button>
-        <button class="operator" value="arg">Arg</button>
-        <button class="operator" value="conj">Conj</button>
-        <button class="operator" value=".">.</button>
-        <button class="operator" value="=">=</button>
-        <button class="operator" value="solve">Solve</button>
-      </div>
-    </div>
-    
-    <!-- Equation Solver Mode -->
-    <div class="calculator-mode" id="equations-mode">
-      <div class="buttons">
-        <button value="x²">x²</button>
-        <button value="x³">x³</button>
-        <button value="x^y">x^y</button>
-        <button value="e^x">e^x</button>
-        <button value="ln(x)">ln(x)</button>
-        <button value="log(x)">log(x)</button>
-        <button value="9">9</button>
-        <button value="8">8</button>
-        <button value="7">7</button>
-        <button value="6">6</button>
-        <button value="5">5</button>
-        <button value="4">4</button>
-        <button value="3">3</button>
-        <button value="2">2</button>
-        <button value="1">1</button>
-        <button value="x">x</button>
-        <button value="y">y</button>
-        <button value="0">0</button>
-        <button value="i">i</button>
-        
-        <button class="operator" value="clear">C</button>
-        <button class="operator" value="backspace">&larr;</button>
-        <button class="operator" value="left">&larr;|</button>
-        <button class="operator" value="right">|&rarr;</button>
-        <button class="operator" value="(">(</button>
-        <button class="operator" value=")">)</button>
-        <button class="operator" value="/">÷</button>
-        <button class="operator" value="*">×</button>
-        <button class="operator" value="-">-</button>
-        <button class="operator" value="+">+</button>
-        <button class="operator" value="^">^</button>
-        <button class="operator" value=".">.</button>
-        <button class="operator" value="=">=</button>
-        <button class="operator" value="ln">ln</button>
-        <button class="operator" value="log">log</button>
-        <button class="operator" value="solve-eq">Solve</button>
-      </div>
-    </div>
-    
-    <!-- Graphing Mode -->
-    <div class="calculator-mode" id="graphing-mode">
-      <div class="graph-container">
-        <canvas id="graph-canvas"></canvas>
-      </div>
-      <div class="display" id="graph-display">f(x) = </div>
-      <div class="buttons">
-        <button value="sin(x)">sin(x)</button>
-        <button value="cos(x)">cos(x)</button>
-        <button value="tan(x)">tan(x)</button>
-        <button value="e^x">e^x</button>
-        <button value="ln(x)">ln(x)</button>
-        <button value="√x">√x</button>
-        
-        <button class="operator" value="clear-graph">Clear</button>
-        <button class="operator" value="zoom-in">Zoom +</button>
-        <button class="operator" value="zoom-out">Zoom -</button>
-        <button class="operator" value="pan-left">←</button>
-        <button class="operator" value="pan-right">→</button>
-        <button class="operator" value="pan-up">↑</button>
-        <button class="operator" value="pan-down">↓</button>
-        
-        <button value="1">1</button>
-        <button value="2">2</button>
-        <button value="3">3</button>
-        <button value="4">4</button>
-        <button value="5">5</button>
-        <button value="6">6</button>
-        <button value="7">7</button>
-        <button value="8">8</button>
-        <button value="9">9</button>
-        <button value="0">0</button>
-        <button value=".">.</button>
-        <button value="x">x</button>
-        <button value="^">^</button>
-        <button value="(">(</button>
-        <button value=")">)</button>
-        <button class="operator" value="graph-it">Graph</button>
-      </div>
-    </div>
-    
-    <!-- Scientific Mode -->
-    <div class="calculator-mode" id="scientific-mode">
-      <div class="buttons">
-        <button value="9">9</button>
-        <button value="8">8</button>
-        <button value="7">7</button>
-        <button value="6">6</button>
-        <button value="5">5</button>
-        <button value="4">4</button>
-        <button value="3">3</button>
-        <button value="2">2</button>
-        <button value="1">1</button>
-        <button value="x">x</button>
-        <button value="0">0</button>
-        <button value="i">i</button>
-        
-        <button class="operator" value="clear">C</button>
-        <button class="operator" value="backspace">&larr;</button>
-        <button class="operator" value="left">&larr;|</button>
-        <button class="operator" value="right">|&rarr;</button>
-        <button class="operator" value="(">(</button>
-        <button class="operator" value=")">)</button>
-        <button class="operator" value="%">%</button>
-        <button class="operator" value="/">÷</button>
-        <button class="operator" value="^">^</button>
-        <button class="operator" value="sqrt">√</button>
-        <button class="operator" value="log">log</button>
-        <button class="operator" value="ln">ln</button>
-        <button class="operator" value="*">×</button>
-        <button class="operator" value="-">-</button>
-        <button class="operator" value="+">+</button>
-        <button class="operator" value="sin">sin</button>
-        <button class="operator" value="cos">cos</button>
-        <button class="operator" value="tan">tan</button>
-        <button class="operator" value="sin⁻¹">sin⁻¹</button>
-        <button class="operator" value="cos⁻¹">cos⁻¹</button>
-        <button class="operator" value="tan⁻¹">tan⁻¹</button>
-        <button class="operator" value="abs">Abs</button>
-        <button class="operator" value="arg">Arg</button>
-        <button class="operator" value="conj">Conj</button>
-        <button class="operator" value=".">.</button>
-        <button class="operator" value="=">=</button>
-        <button class="operator" value="solve">Solve</button>
-      </div>
-    </div>
-    
-    <!-- Matrices Mode -->
-    <div class="calculator-mode" id="matrices-mode">
-      <div class="matrix-controls">
-        <select id="matrix-operation">
-          <option value="add">Add</option>
-          <option value="multiply">Multiply</option>
-          <option value="determinant">Determinant</option>
-          <option value="inverse">Inverse</option>
-          <option value="transpose">Transpose</option>
-        </select>
-        <select id="matrix-size">
-          <option value="2x2">2×2</option>
-          <option value="3x3">3×3</option>
-        </select>
-      </div>
-      <div class="matrix-input" id="matrix-a">
-        <!-- Generated dynamically based on size -->
-      </div>
-      <div class="matrix-input" id="matrix-b" style="display:none;">
-        <!-- Generated dynamically based on size -->
-      </div>
-      <div class="buttons">
-        <button class="operator" value="clear-matrix">Clear</button>
-        <button class="operator" value="fill-identity">Identity</button>
-        <button class="operator" value="fill-zeros">Zeros</button>
-        <button class="operator" value="fill-ones">Ones</button>
-        
-        <button value="1">1</button>
-        <button value="2">2</button>
-        <button value="3">3</button>
-        <button value="4">4</button>
-        <button value="5">5</button>
-        <button value="6">6</button>
-        <button value="7">7</button>
-        <button value="8">8</button>
-        <button value="9">9</button>
-        <button value="0">0</button>
-        <button value="-">-</button>
-        <button value=".">.</button>
-        
-        <button class="operator" value="calculate-matrix">Calculate</button>
-      </div>
-    </div>
-  </div>
+        <div class="controls">
+          <button class="control-btn" id="stepByStep" title="Toggle Step-by-Step">
+            <i class="fas fa-list-ol"></i>
+          </button>
+          <button class="control-btn" id="toggleAdvanced" title="Toggle Advanced Functions">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button class="control-btn" id="toggleScientific" title="Toggle Scientific Functions">
+            <i class="fas fa-calculator"></i>
+          </button>
+          <button class="control-btn" id="toggleStats" title="Toggle Statistics">
+            <i class="fas fa-chart-bar"></i>
+          </button>
+          <button class="control-btn" id="toggleMemory" title="Toggle Memory & Conversion">
+            <i class="fas fa-memory"></i>
+          </button>
+          <button class="control-btn" id="history" title="History">
+            <i class="fas fa-history"></i>
+          </button>
+        </div>
 
-  <!-- JavaScript Files -->
+        <div class="buttons-container">
+          <!-- Advanced Functions Panel -->
+          <div class="advanced-panel" id="advancedPanel">
+            <!-- First Row - Calculation & Solve Functions -->
+            <button class="function-btn" data-function="solve" title="Solve Equations">SOLVE</button>
+            <button class="function-btn" data-function="calc" title="Calculate">CALC</button>
+            <button class="function-btn" data-function="integral" title="Integration">∫dx</button>
+            <button class="function-btn" data-function="derivative" title="Derivative">d/dx</button>
+            
+            <!-- Second Row - Advanced Math -->
+            <button class="function-btn" data-function="abs" title="Absolute Value">|x|</button>
+            <button class="function-btn" data-function="sqrt" title="Square Root">√</button>
+            <button class="function-btn" data-function="cbrt" title="Cube Root">∛</button>
+            <button class="function-btn" data-function="nroot" title="nth Root">ⁿ√</button>
+            
+            <!-- Third Row - Powers & Logs -->
+            <button class="function-btn" data-function="pow2" title="Square">x²</button>
+            <button class="function-btn" data-function="pow3" title="Cube">x³</button>
+            <button class="function-btn" data-function="powxy" title="Power">x^y</button>
+            <button class="function-btn" data-function="pow10" title="10^x">10^x</button>
+            
+            <!-- Fourth Row - Logarithms -->
+            <button class="function-btn" data-function="log" title="Log base 10">log</button>
+            <button class="function-btn" data-function="ln" title="Natural Log">ln</button>
+            <button class="function-btn" data-function="exp" title="e^x">e^x</button>
+            <button class="function-btn" data-function="logab" title="Log base a">log_a(b)</button>
+          </div>
+
+          <!-- Scientific Functions Panel -->
+          <div class="scientific-panel" id="scientificPanel">
+            <!-- Trigonometric Functions -->
+            <button class="function-btn" data-function="sin" title="Sine">sin</button>
+            <button class="function-btn" data-function="cos" title="Cosine">cos</button>
+            <button class="function-btn" data-function="tan" title="Tangent">tan</button>
+            <button class="function-btn" data-function="asin" title="Arc Sine">sin⁻¹</button>
+            
+            <button class="function-btn" data-function="acos" title="Arc Cosine">cos⁻¹</button>
+            <button class="function-btn" data-function="atan" title="Arc Tangent">tan⁻¹</button>
+            <button class="function-btn" data-function="sinh" title="Hyperbolic Sine">sinh</button>
+            <button class="function-btn" data-function="cosh" title="Hyperbolic Cosine">cosh</button>
+            
+            <button class="function-btn" data-function="tanh" title="Hyperbolic Tangent">tanh</button>
+            <button class="function-btn" data-function="asinh" title="Inverse Hyperbolic Sine">sinh⁻¹</button>
+            <button class="function-btn" data-function="acosh" title="Inverse Hyperbolic Cosine">cosh⁻¹</button>
+            <button class="function-btn" data-function="atanh" title="Inverse Hyperbolic Tangent">tanh⁻¹</button>
+          </div>
+
+          <!-- Statistics & Probability Panel -->
+          <div class="stats-panel" id="statsPanel">
+            <!-- Statistics Functions -->
+            <button class="function-btn" data-function="ncr" title="Combinations">nCr</button>
+            <button class="function-btn" data-function="npr" title="Permutations">nPr</button>
+            <button class="function-btn" data-function="factorial" title="Factorial">x!</button>
+            <button class="function-btn" data-function="random" title="Random">Ran#</button>
+            
+            <!-- Number Base Conversion -->
+            <button class="function-btn" data-function="dec" title="Decimal">DEC</button>
+            <button class="function-btn" data-function="hex" title="Hexadecimal">HEX</button>
+            <button class="function-btn" data-function="bin" title="Binary">BIN</button>
+            <button class="function-btn" data-function="oct" title="Octal">OCT</button>
+            
+            <!-- Constants -->
+            <button class="function-btn" data-function="pi" title="Pi">π</button>
+            <button class="function-btn" data-function="e" title="Euler's number">e</button>
+            <button class="function-btn" data-function="deg" title="Degrees">°</button>
+            <button class="function-btn" data-function="percent" title="Percentage">%</button>
+          </div>
+
+          <div class="memory-panel" id="memoryPanel">
+            <button class="function-btn memory" data-function="ms" title="Memory Store">MS</button>
+            <button class="function-btn memory" data-function="mr" title="Memory Recall">MR</button>
+            <button class="function-btn memory" data-function="mplus" title="Memory Plus">M+</button>
+            <button class="function-btn memory" data-function="mminus" title="Memory Minus">M-</button>
+            
+            <button class="function-btn" data-function="pol" title="Polar Coordinates">Pol</button>
+            <button class="function-btn" data-function="rec" title="Rectangular Coordinates">Rec</button>
+            <button class="function-btn" data-function="dms" title="Degrees Minutes Seconds">D°M'S"</button>
+            <button class="function-btn" data-function="sdp" title="Standard Deviation Population">σ</button>
+            
+            <button class="function-btn" data-function="matrix" title="Matrix">MATRIX</button>
+            <button class="function-btn" data-function="vector" title="Vector">VECTOR</button>
+            <button class="function-btn" data-function="cmplx" title="Complex Numbers">CMPLX</button>
+            <button class="function-btn" data-function="base" title="Base Conversion">BASE</button>
+          </div>
+
+          <!-- Main Calculator Buttons -->
+          <div class="main-buttons">            
+            <button class="operator" data-action="del" title="Delete">DEL</button>
+            <button class="operator clear" data-action="clear" title="All Clear">AC</button>
+            <button class="operator" data-action="parentheses" title="Parentheses">()</button>
+            <button class="operator" data-action="divide" title="Divide">÷</button>
+            
+            <button class="number" data-number="7">7</button>
+            <button class="number" data-number="8">8</button>
+            <button class="number" data-number="9">9</button>
+            <button class="operator" data-action="multiply" title="Multiply">×</button>
+            
+            <button class="number" data-number="4">4</button>
+            <button class="number" data-number="5">5</button>
+            <button class="number" data-number="6">6</button>
+            <button class="operator" data-action="subtract" title="Subtract">−</button>
+            
+            <button class="number" data-number="1">1</button>
+            <button class="number" data-number="2">2</button>
+            <button class="number" data-number="3">3</button>
+            <button class="operator" data-action="add" title="Add">+</button>
+            
+            <button class="operator" data-action="sign" title="Change Sign">±</button>
+            <button class="number zero" data-number="0">0</button>
+            <button class="operator" data-action="decimal" title="Decimal Point">.</button>
+            <button class="operator equals" data-action="equals" title="Equals">=</button>
+            
+            <button class="operator" data-action="comma" title="Comma">,</button>
+            <button class="operator" data-action="exp10" title="×10^x">×10^x</button>
+            <button class="operator" data-action="eng" title="Engineering Notation">ENG</button>
+            <button class="operator" data-action="ans" title="Last Answer">ANS</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Panel -->
+      <div class="steps-panel" id="stepsPanel">
+        <div class="steps-header">
+          <h3>Step-by-Step Solution</h3>
+          <button class="close-btn" id="closeSteps">×</button>
+        </div>
+        <div class="steps-content" id="stepsContent">
+          <p>Enable step-by-step mode and perform a calculation to see the solution process.</p>
+        </div>
+      </div>
+
+      <!-- Settings Modal -->
+      <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+          <div class="settings-header">
+            <h3>Calculator Settings</h3>
+            <button class="close-btn" id="closeSettings">×</button>
+          </div>
+          <div class="settings-body">
+            <!-- Angle Mode -->
+            <div class="setting-group">
+              <label>Angle Mode:</label>
+              <div class="mode-buttons">
+                <button class="mode-btn" data-angle-mode="deg" id="degBtn">DEG</button>
+                <button class="mode-btn" data-angle-mode="rad" id="radBtn">RAD</button>
+                <button class="mode-btn" data-angle-mode="grad" id="gradBtn">GRAD</button>
+              </div>
+            </div>
+            
+            <!-- Number Base -->
+            <div class="setting-group">
+              <label>Number Base:</label>
+              <div class="mode-buttons">
+                <button class="mode-btn" data-function="dec" id="decBtn">DEC</button>
+                <button class="mode-btn" data-function="hex" id="hexBtn">HEX</button>
+                <button class="mode-btn" data-function="bin" id="binBtn">BIN</button>
+                <button class="mode-btn" data-function="oct" id="octBtn">OCT</button>
+              </div>
+            </div>
+            
+            <!-- Theme -->
+            <div class="setting-group">
+              <label>Theme:</label>
+              <div class="mode-buttons">
+                <button class="mode-btn" id="lightTheme">Light</button>
+                <button class="mode-btn" id="darkTheme">Dark</button>
+              </div>
+            </div>
+            
+            <!-- Memory -->
+            <div class="setting-group">
+              <label>Memory Value:</label>
+              <div class="memory-display" id="memoryValue">0</div>
+              <button class="mode-btn" id="clearMemory">Clear Memory</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Panel -->
+      <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+          <h3>History</h3>
+          <button class="clear-btn" id="clearHistory" title="Clear History">Clear</button>
+          <button class="close-btn" id="closeHistory">×</button>
+        </div>
+        <div class="history-content" id="historyContent">
+          <p>No calculations yet.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- Load modular JavaScript files in correct dependency order -->
   <script src="js/core.js"></script>
+  <script src="js/display.js"></script>
   <script src="js/arithmetic.js"></script>
+  <script src="js/scientific.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/mode-switcher.js"></script>
   <script src="js/equations.js"></script>
   <script src="js/graphing.js"></script>
-  <script src="js/scientific.js"></script>
   <script src="js/matrices.js"></script>
-  <script src="js/mode-switcher.js"></script>
-</body>
+  <!-- Initialize the calculator -->
+  <script src="js/script.js"></script>
 </html>
