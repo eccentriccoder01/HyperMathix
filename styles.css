@@ -1,0 +1,593 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 26s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+}
+
+.title {
+  text-align: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: titleGlow 16s ease infinite;
+}
+
+/* Calculator Main Container */
+#calculator {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeIn 0.5s ease, calculatorGlow 8s ease infinite;
+}
+
+/* Display Section */
+.display-section {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 2rem;
+  position: relative;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  /* Ensure settings button area is always clickable */
+  padding-left: 4rem;
+}
+
+.expression-display {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+  min-height: 1.5rem;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+.result-display {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: right;
+  min-height: 3rem;
+  word-wrap: break-word;
+}
+
+/* Settings Button */
+.settings-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.settings-btn:active {
+  transform: rotate(90deg) scale(0.95);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Mobile responsiveness for settings button */
+@media (max-width: 768px) {
+  .settings-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+  
+  .display-section {
+    padding-left: 3.5rem;
+    padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+  
+  .display-section {
+    padding: 1.25rem 1.25rem 1.25rem 3rem;
+  }
+}
+
+/* Enhanced controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn.active {
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  transform: scale(1.1);
+}
+
+/* Enhanced Button Sizes for Mobile */
+@media (max-width: 768px) {
+  .function-btn {
+    height: 40px;
+    font-size: 0.75rem;
+  }
+  
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+  
+  .controls {
+    gap: 0.4rem;
+    padding: 0.6rem;
+  }
+  
+  .advanced-panel, .scientific-panel, .stats-panel, .memory-panel {
+    gap: 0.4rem;
+  }
+  
+  .main-buttons {
+    gap: 0.6rem;
+  }
+}
+
+/* Buttons Container */
+.buttons-container {
+  padding: 0.8rem;
+}
+
+/* Function Panels */
+.advanced-panel, .scientific-panel, .stats-panel, .memory-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.advanced-panel.active, .scientific-panel.active, .stats-panel.active, .memory-panel.active {
+  opacity: 1;
+  max-height: 400px;
+  padding: 0.5rem;
+  background: rgba(240, 240, 240, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Function Buttons */
+.function-btn {
+  height: 45px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.function-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.function-btn:active {
+  transform: translateY(0);
+}
+
+/* Special Function Button Styles */
+.function-btn.memory {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+}
+
+.function-btn.memory:hover {
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+/* Enhanced Main Buttons */
+.main-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+/* Special operator styles */
+.operator.special {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.operator.special:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+}
+
+/* Zero button spans single cell now */
+.number.zero {
+  grid-column: span 1;
+}
+
+button {
+  height: 45px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #2c3e50;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.number:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.operator {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+}
+
+.operator:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+}
+
+.operator.clear {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+.operator.equals {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  grid-column: span 1;
+}
+
+.number.zero {
+  grid-column: span 1;
+}
+
+/* Side Panels */
+.steps-panel, .history-panel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100vh;
+  background: white;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.steps-panel.active, .history-panel.active {
+  right: 0;
+}
+
+.steps-header, .history-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.steps-header h3, .history-header h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.steps-content, .history-content {
+  padding: 1.5rem;
+}
+
+.step-item {
+  background: #f8f9fa;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.step-number {
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.step-description {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.step-calculation {
+  font-family: 'Courier New', monospace;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: #2c3e50;
+}
+
+.history-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.history-item:hover {
+  background: #f8f9fa;
+}
+
+.history-expression {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.history-result {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.history-time {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+/* Settings Modal */
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.settings-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.settings-content {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.settings-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.settings-body {
+  padding: 1.5rem;
+}
+
+.setting-group {
+  margin-bottom: 1.5rem;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mode-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.mode-btn:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.memory-display {
+  background: #f5f5f5;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+/* Dark theme for settings modal */
+.dark-theme .settings-content {
+  background: #2c3e50;
+  color: white;
+}
+
+.dark-theme .setting-group label {
+  color: white;
+}
+
+.dark-theme .mode-btn {
+  background: #34495e;
+  color: white;
+  border-color: #4a5f7a;
+}
+
+.dark-theme .mode-btn:hover {
+  background: #4a5f7a;
+}
+
+.dark-theme .memory-display {
+  background: #34495e;
+  color: white;
+  border-color: #4a5f7a;
+}
+
+
+
