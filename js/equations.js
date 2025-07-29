@@ -1,4 +1,3 @@
-// Equation solver specific functionality
 function normalizeExponents(expr) {
     return expr
       .replace(/x²/g, 'x^2')
@@ -116,8 +115,6 @@ function solveEquation(expr) {
     cursorPosition = currentExpression.length;
     updateDisplay();
   }
-  
-  // Equation mode button handlers
   document.querySelectorAll('#equations-mode button').forEach(button => {
     button.addEventListener("click", function() {
       const value = this.value;

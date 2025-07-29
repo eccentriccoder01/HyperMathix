@@ -1,4 +1,3 @@
-// Arithmetic mode specific functionality
 function parseExpression(expr) {
     let parsed = expr.replace(/÷/g, '/')
                     .replace(/×/g, '*')
@@ -27,8 +26,7 @@ function parseExpression(expr) {
   
     return parsed;
   }
-  
-  // Arithmetic mode button handlers
+
   document.querySelectorAll('#arithmetic-mode button').forEach(button => {
     button.addEventListener("click", function() {
       const value = this.value;

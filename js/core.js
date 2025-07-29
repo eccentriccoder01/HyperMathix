@@ -1,6 +1,4 @@
-// core.js - Final Version
-// Core calculator functionality - display, cursor, and basic operations
-const calculator = document.querySelector("#calculator"); // Ensure your HTML has <div id="calculator">
+const calculator = document.querySelector("#calculator");
 const display = calculator.querySelector(".display");
 
 let cursorPosition = 0;
@@ -15,14 +13,12 @@ function insertAtCursor(content) {
   return currentExpression.slice(0, cursorPosition) + content + currentExpression.slice(cursorPosition);
 }
 
-// Complex number class (needed by all modes)
 class Complex {
   constructor(real, imag = 0) {
     this.real = real;
     this.imag = imag;
   }
 
-  // Improved toString for better display, especially for very small numbers (near zero)
   toString(precision = 10) {
     const real = parseFloat(this.real.toFixed(precision));
     const imag = parseFloat(this.imag.toFixed(precision));
@@ -48,7 +44,6 @@ class Complex {
     return new Complex(this.real, -this.imag);
   }
 
-  // Helper to ensure 'other' is a Complex object for arithmetic operations
   _toComplex(other) {
     if (other instanceof Complex) {
       return other;
@@ -96,23 +91,20 @@ class Complex {
     );
   }
 
-  // Complex Exponential (e^z)
   exp() {
     const r = Math.exp(this.real);
     return new Complex(r * Math.cos(this.imag), r * Math.sin(this.imag));
   }
 
-  // Complex Natural Logarithm (ln(z))
   log() {
     if (this.real === 0 && this.imag === 0) {
-      return new Complex(NaN, NaN); // Logarithm of zero is undefined
+      return new Complex(NaN, NaN); 
     }
     const r = this.abs();
     const theta = this.arg();
     return new Complex(Math.log(r), theta);
   }
 
-  // Complex base-10 Logarithm (log10(z))
   log10() {
     const lnZ = this.log();
     if (isNaN(lnZ.real) || isNaN(lnZ.imag)) {
@@ -122,17 +114,15 @@ class Complex {
     return new Complex(lnZ.real / ln10, lnZ.imag / ln10);
   }
 
-  // Complex Power (z^p)
   pow(p) {
-    p = this._toComplex(p); // Ensure exponent is a Complex object
+    p = this._toComplex(p);
 
-    if (this.real === 0 && this.imag === 0) { // Base is zero
-        if (p.real > 0 && p.imag === 0) return new Complex(0,0); // 0^positive = 0
-        if (p.real === 0 && p.imag === 0) return new Complex(1,0); // 0^0 = 1
-        return new Complex(NaN, NaN); // 0 raised to non-positive power (e.g., 0^-1, 0^i)
+    if (this.real === 0 && this.imag === 0) {
+        if (p.real > 0 && p.imag === 0) return new Complex(0,0);
+        if (p.real === 0 && p.imag === 0) return new Complex(1,0);
+        return new Complex(NaN, NaN); 
     }
 
-    // z^p = exp(p * log(z))
     const logZ = this.log();
     if (isNaN(logZ.real) || isNaN(logZ.imag)) {
         return new Complex(NaN, NaN);
@@ -141,15 +131,13 @@ class Complex {
     return product.exp();
   }
 
-  // Complex Square Root (sqrt(z))
   sqrt() {
     return this.pow(0.5);
   }
 
-  // --- Complex Trigonometric Functions ---
   sin() {
-    const iz = new Complex(-this.imag, this.real); // i * z
-    const minus_iz = new Complex(this.imag, -this.real); // -i * z
+    const iz = new Complex(-this.imag, this.real);
+    const minus_iz = new Complex(this.imag, -this.real); 
 
     const e_iz = iz.exp();
     const e_minus_iz = minus_iz.exp();
@@ -161,8 +149,8 @@ class Complex {
   }
 
   cos() {
-    const iz = new Complex(-this.imag, this.real); // i * z
-    const minus_iz = new Complex(this.imag, -this.real); // -i * z
+    const iz = new Complex(-this.imag, this.real);
+    const minus_iz = new Complex(this.imag, -this.real);
 
     const e_iz = iz.exp();
     const e_minus_iz = minus_iz.exp();
@@ -176,13 +164,12 @@ class Complex {
   tan() {
     const sinZ = this.sin();
     const cosZ = this.cos();
-    if (cosZ.abs() < 1e-15) { // Check if denominator is effectively zero
-        return new Complex(NaN, NaN); // Tan is undefined
+    if (cosZ.abs() < 1e-15) {
+        return new Complex(NaN, NaN);
     }
     return sinZ.div(cosZ);
   }
 
-  // --- Complex Inverse Trigonometric Functions ---
   asin() {
     const z_squared = this.mul(this);
     const one_minus_z_squared = new Complex(1, 0).sub(z_squared);
@@ -230,8 +217,8 @@ class Complex {
     const numerator = one.sub(iz);
     const denominator = one.add(iz);
 
-    if (denominator.abs() < 1e-15) { // Check if denominator is effectively zero
-        return new Complex(NaN, NaN); // Atan is undefined
+    if (denominator.abs() < 1e-15) {
+        return new Complex(NaN, NaN);
     }
 
     const fraction = numerator.div(denominator);
@@ -245,16 +232,11 @@ class Complex {
   }
 }
 
-// Complex number parsing and utility functions
 function parseComplex(str) {
   try {
-    str = str.replace(/\s+/g, ''); // Remove all whitespace
-
-    // Handle simple 'i'
+    str = str.replace(/\s+/g, '');
     if (str === 'i') return new Complex(0, 1);
     if (str === '-i') return new Complex(0, -1);
-
-    // Handle pure imaginary numbers like "5i", "-2.5i"
     const pureImagMatch = str.match(/^([+-]?\d*\.?\d*(?:[eE][+-]?\d+)?)i$/);
     if (pureImagMatch) {
         const imagPart = pureImagMatch[1];
@@ -262,21 +244,13 @@ function parseComplex(str) {
         if (imagPart === '-') return new Complex(0, -1);
         return new Complex(0, Number(imagPart));
     }
-
-    // If no 'i', it's a real number
     if (!str.includes('i')) {
         return new Complex(Number(str), 0);
     }
 
-    // Handle general complex numbers like "2+3i", "-1-i", "4+i"
     let realPart = 0;
     let imagPart = 0;
 
-    // Regex to split parts while correctly handling signs for complex numbers
-    // e.g., "2+3i" -> "2", "+3i"
-    // "-1-i" -> "-1", "-i"
-    // "4+i" -> "4", "+i"
-    // This is crucial for eval() to correctly parse "1+i" where "i" is treated as "1i"
     const complexParts = str.match(/^([+-]?\d*\.?\d*(?:[eE][+-]?\d+)?)\s*([+-]?\d*\.?\d*(?:[eE][+-]?\d+)?i)?$/);
     if (complexParts) {
         realPart = Number(complexParts[1]);
@@ -289,8 +263,6 @@ function parseComplex(str) {
         return new Complex(realPart, imagPart);
     }
 
-    // Fallback for more complex cases or if the above regex fails for some reason
-    // This is less ideal as it might mishandle things like "i+1"
     const parts = str.split(/(?=[+-])(?![\d\.][eE][+-])/);
 
     parts.forEach(part => {
@@ -313,11 +285,6 @@ function parseComplex(str) {
   }
 }
 
-
-// --- Global helper functions for eval() context ---
-// These functions act as wrappers that can handle both Complex objects and numbers
-// and then dispatch to the appropriate Complex method or Math function.
-
 function _toComplexIfNumber(val) {
     if (typeof val === 'number') {
         return new Complex(val, 0);
@@ -325,7 +292,6 @@ function _toComplexIfNumber(val) {
     return val;
 }
 
-// Global arithmetic functions
 function add(a, b) {
     a = _toComplexIfNumber(a);
     b = _toComplexIfNumber(b);
@@ -361,8 +327,6 @@ function div(a, b) {
     return new Complex(NaN, NaN);
 }
 
-
-// Scientific/Complex functions (wrappers for Complex methods)
 function abs(z) { z = _toComplexIfNumber(z); if (z instanceof Complex) return z.abs(); return NaN; }
 function arg(z) { z = _toComplexIfNumber(z); if (z instanceof Complex) return z.arg(); return NaN; }
 function conj(z) { z = _toComplexIfNumber(z); if (z instanceof Complex) return z.conj(); return z; }
@@ -388,5 +352,4 @@ function pow(base, exponent) {
     return new Complex(NaN, NaN);
 }
 
-// Initialize display (ensure this runs after DOM is loaded, usually by putting script at end of body)
 updateDisplay();

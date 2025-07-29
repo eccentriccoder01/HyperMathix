@@ -1,186 +1,2192 @@
-body {
-    background-image: url('background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    font-family: 'Roboto', sans-serif;
-  }
+/* === QUANTUM CALCULATOR - CYBERPUNK SCIENTIFIC INTERFACE === */
+
+/* === ROOT VARIABLES === */
+:root {
+  /* Core Colors */
+  --void-black: #000000;
+  --deep-space: #0a0a0f;
+  --quantum-blue: #00ffff;
+  --plasma-pink: #ff0080;
+  --energy-green: #00ff41;
+  --neural-purple: #8a2be2;
+  --antimatter-orange: #ff6600;
+  --photon-yellow: #ffff00;
+  --cosmic-white: #ffffff;
+  --stellar-silver: #c0c0c0;
   
-  #calculator {
-    width: 600px;
-    height: auto;
-    margin: 50px auto;
-    background-image: url('body background.webp');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: #fff;
-    border-radius: 20px;
-    box-shadow: 10px 10px 15px .1px black;
-    padding: 20px;
-  }
+  /* Gradients */
+  --cosmic-gradient: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+  --quantum-field: linear-gradient(45deg, rgba(0,255,255,0.1) 0%, rgba(255,0,128,0.1) 100%);
+  --energy-pulse: linear-gradient(90deg, transparent, rgba(0,255,255,0.6), transparent);
+  --hologram-shimmer: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(255,0,128,0.2), rgba(0,255,65,0.2));
+  --neural-network: radial-gradient(circle, rgba(138,43,226,0.3) 0%, transparent 70%);
   
-  .mode-selector {
-    display: flex;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 10px;
-  }
+  /* Typography */
+  --font-quantum: 'Orbitron', 'JetBrains Mono', monospace;
+  --font-data: 'JetBrains Mono', 'Courier New', monospace;
+  --font-interface: 'Inter', 'Segoe UI', sans-serif;
   
-  .mode-btn {
-    flex: 1;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s;
-  }
-  
-  .mode-btn.active {
-    background: rgba(0, 150, 255, 0.7);
-    border-radius: 5px;
-  }
-  
-  .mode-btn:hover {
-    background: rgba(0, 150, 255, 0.5);
-  }
-  
-  .display {
-    font-style: italic;
-    width: 100%;
-    height: 70px;
-    background-color: rgba(0, 0, 0, 0.7);
-    font-size: 30px;
-    text-align: right;
-    padding: 10px;
-    box-sizing: border-box;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-family: Roboto;
-    overflow-x: auto;
-  }
-  
-  .calculator-mode {
-    display: none;
-  }
-  
-  .calculator-mode.active {
-    display: block;
-  }
-  
-  .buttons {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-gap: 10px;
-  }
-  
-  button {
-    width: 100%;
-    height: 50px;
-    font-size: 18px;
-    background-image: url('digit background.webp');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: whitesmoke;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    filter: drop-shadow(2px 2px 2px rgb(19, 24, 19));
-    transition: transform 0.1s;
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-  }
-  
-  .operator {
-    background-image: url('button background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: #fff;
-  }
-  
-  /* Graphing Mode Specific Styles */
-  .graph-container {
-    width: 100%;
-    height: 300px;
-    background-color: rgba(0, 0, 0, 0.5);
-    margin-bottom: 15px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  #graph-canvas {
-    width: 100%;
-    height: 100%;
-  }
-  #graphing-mode .display {
-  color: white;
-  font-size: 1.5em;
-  text-align: center;
-  margin: 10px 0;
+  /* Shadows & Effects */
+  --quantum-glow: 0 0 20px rgba(0,255,255,0.5), 0 0 40px rgba(0,255,255,0.3), 0 0 60px rgba(0,255,255,0.1);
+  --energy-shadow: 0 0 30px rgba(0,255,65,0.4), inset 0 0 30px rgba(0,255,65,0.1);
+  --plasma-glow: 0 0 25px rgba(255,0,128,0.6), 0 0 50px rgba(255,0,128,0.3);
+  --holographic: 0 8px 32px rgba(0,255,255,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-  
-  /* Matrices Mode Specific Styles */
+/* === GLOBAL RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--deep-space);
+  font-family: var(--font-interface);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* === COSMIC BACKGROUND SYSTEM === */
+.cosmic-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--cosmic-gradient);
+  z-index: -5;
+}
+
+.stellar-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--quantum-blue), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--plasma-pink), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--energy-green), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--photon-yellow), transparent),
+    radial-gradient(2px 2px at 160px 30px, var(--neural-purple), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: stellarDrift 60s linear infinite;
+  opacity: 0.6;
+  z-index: -4;
+}
+
+@keyframes stellarDrift {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-100px); }
+}
+
+.quantum-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: quantumShift 8s ease-in-out infinite alternate;
+  z-index: -3;
+}
+
+@keyframes quantumShift {
+  0% { transform: translate(0, 0); opacity: 0.3; }
+  100% { transform: translate(25px, 25px); opacity: 0.1; }
+}
+
+.energy-waves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse 800px 200px at 50% 0%, rgba(0,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 600px 150px at 0% 100%, rgba(255,0,128,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 700px 180px at 100% 50%, rgba(0,255,65,0.1) 0%, transparent 50%);
+  animation: energyPulse 12s ease-in-out infinite;
+  z-index: -2;
+}
+
+@keyframes energyPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* === NEURAL NETWORK OVERLAY === */
+.neural-network {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.neural-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--quantum-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--quantum-blue);
+  animation: neuralPulse 3s ease-in-out infinite;
+}
+
+.neural-node:nth-child(1) {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.neural-node:nth-child(2) {
+  top: 60%;
+  right: 20%;
+  animation-delay: 1s;
+}
+
+.neural-node:nth-child(3) {
+  bottom: 30%;
+  left: 50%;
+  animation-delay: 2s;
+}
+
+@keyframes neuralPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(2); opacity: 1; }
+}
+
+.neural-connection {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--quantum-blue), transparent);
+  opacity: 0.4;
+  animation: dataFlow 4s linear infinite;
+}
+
+.neural-connection:nth-child(4) {
+  top: 25%;
+  left: 15%;
+  width: 200px;
+  transform: rotate(45deg);
+}
+
+.neural-connection:nth-child(5) {
+  bottom: 35%;
+  right: 20%;
+  width: 150px;
+  transform: rotate(-30deg);
+  animation-delay: 2s;
+}
+
+@keyframes dataFlow {
+  0% { opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+/* === MAIN CALCULATOR CONTAINER === */
+#calculator {
+  width: 900px;
+  max-width: 95vw;
+  margin: 2rem auto;
+  background: 
+    linear-gradient(135deg, rgba(10,10,15,0.95), rgba(20,20,35,0.95)),
+    var(--quantum-field);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid rgba(0,255,255,0.3);
+  border-radius: 20px;
+  box-shadow: 
+    var(--holographic),
+    inset 0 0 50px rgba(0,255,255,0.05);
+  padding: 2.5rem;
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* === HOLOGRAPHIC BORDER EFFECT === */
+.holographic-border {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, 
+    var(--quantum-blue), 
+    var(--plasma-pink), 
+    var(--energy-green), 
+    var(--neural-purple));
+  background-size: 400% 400%;
+  animation: holographicShift 8s ease infinite;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+@keyframes holographicShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* === CALCULATOR HEADER === */
+.calculator-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.quantum-signature {
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+}
+
+.dna-helix {
+  width: 20px;
+  height: 40px;
+  border: 2px solid var(--energy-green);
+  border-radius: 50%;
+  transform: rotate(45deg);
+  animation: helixRotate 4s linear infinite;
+}
+
+@keyframes helixRotate {
+  0% { transform: rotate(45deg); }
+  100% { transform: rotate(405deg); }
+}
+
+.orbit-ring {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--quantum-blue);
+  border-radius: 50%;
+  animation: orbitSpin 3s linear infinite reverse;
+}
+
+@keyframes orbitSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.header-constellation {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 60px;
+  height: 40px;
+}
+
+.constellation-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--stellar-silver);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--stellar-silver);
+}
+
+.constellation-dot:nth-child(1) { top: 5px; left: 10px; }
+.constellation-dot:nth-child(2) { top: 15px; right: 15px; }
+.constellation-dot:nth-child(3) { bottom: 5px; left: 25px; }
+
+.constellation-line {
+  position: absolute;
+  height: 1px;
+  background: var(--stellar-silver);
+  opacity: 0.6;
+}
+
+.constellation-line:nth-child(4) {
+  top: 10px;
+  left: 12px;
+  width: 25px;
+  transform: rotate(25deg);
+}
+
+.constellation-line:nth-child(5) {
+  top: 20px;
+  left: 27px;
+  width: 15px;
+  transform: rotate(-45deg);
+}
+
+.calculator-title {
+  font-family: var(--font-quantum);
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.title-glow {
+  background: linear-gradient(45deg, var(--quantum-blue), var(--plasma-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0,255,255,0.5);
+  animation: titlePulse 3s ease-in-out infinite;
+}
+
+.title-main {
+  background: linear-gradient(45deg, var(--energy-green), var(--photon-yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 0.5rem;
+}
+
+@keyframes titlePulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+.title-underline {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--quantum-blue), var(--plasma-pink), transparent);
+  margin: 0.5rem auto;
+  animation: underlineFlow 4s ease-in-out infinite;
+}
+
+@keyframes underlineFlow {
+  0%, 100% { transform: scaleX(0.8); opacity: 0.6; }
+  50% { transform: scaleX(1.2); opacity: 1; }
+}
+
+/* === POWER INDICATOR === */
+.power-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.quantum-core {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.core-ring {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--quantum-blue);
+  border-radius: 50%;
+  animation: coreRotate 4s linear infinite;
+}
+
+.core-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--quantum-blue);
+  border-radius: 50%;
+  box-shadow: var(--quantum-glow);
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes coreRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.5); }
+}
+
+.status-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.status-label {
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  color: var(--stellar-silver);
+  letter-spacing: 0.1em;
+}
+
+.status-value {
+  font-family: var(--font-quantum);
+  font-size: 0.9rem;
+  color: var(--energy-green);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--energy-green);
+}
+
+.frequency-bars {
+  display: flex;
+  gap: 2px;
+  margin-top: 0.2rem;
+}
+
+.freq-bar {
+  width: 3px;
+  background: var(--energy-green);
+  animation: frequencyPulse 1.5s ease-in-out infinite;
+}
+
+.freq-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+.freq-bar:nth-child(2) { height: 12px; animation-delay: 0.3s; }
+.freq-bar:nth-child(3) { height: 10px; animation-delay: 0.6s; }
+.freq-bar:nth-child(4) { height: 6px; animation-delay: 0.9s; }
+
+@keyframes frequencyPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* === MODE SELECTOR === */
+.mode-selector {
+  position: relative;
+  display: flex;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.6), rgba(20,20,35,0.6)),
+    radial-gradient(circle at center, rgba(0,255,255,0.05), transparent);
+  border: 1px solid rgba(0,255,255,0.2);
+  border-radius: 15px;
+  padding: 8px;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.mode-scanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent);
+  animation: modeScan 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes modeScan {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.mode-slider {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  height: calc(100% - 16px);
+  width: calc(20% - 6px);
+  background: 
+    linear-gradient(135deg, var(--quantum-blue), var(--plasma-pink)),
+    linear-gradient(45deg, rgba(0,255,255,0.3), rgba(255,0,128,0.3));
+  border-radius: 10px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 0 20px rgba(0,255,255,0.4),
+    inset 0 0 20px rgba(255,255,255,0.1);
+  z-index: 1;
+}
+
+.mode-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.2rem 0.8rem;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+  border-radius: 10px;
+  font-family: var(--font-interface);
+}
+
+.mode-btn.active {
+  color: var(--cosmic-white);
+  transform: translateY(-2px);
+}
+
+.mode-btn:hover:not(.active) {
+  color: rgba(255,255,255,0.8);
+  transform: translateY(-1px);
+}
+
+.mode-icon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mode-btn.active .mode-icon {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* === MODE ICON DESIGNS === */
+.icon-geometric {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.geo-square {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  animation: geoFloat 3s ease-in-out infinite;
+}
+
+.geo-triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid currentColor;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  animation: geoFloat 3s ease-in-out infinite reverse;
+}
+
+@keyframes geoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+.icon-atomic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.atom-nucleus {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px currentColor;
+}
+
+.electron-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 12px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: electronOrbit 4s linear infinite;
+}
+
+.orbit-2 {
+  transform: translate(-50%, -50%) rotate(60deg);
+  animation-delay: 1.3s;
+}
+
+@keyframes electronOrbit {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.icon-formula {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.formula-line {
+  width: 16px;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  top: 8px;
+  left: 4px;
+  animation: formulaPulse 2s ease-in-out infinite;
+}
+
+.formula-curve {
+  width: 12px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  animation: formulaPulse 2s ease-in-out infinite reverse;
+}
+
+@keyframes formulaPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.icon-wave {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wave-path {
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  animation: waveFlow 3s ease-in-out infinite;
+}
+
+.wave-grid {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background-image: 
+    linear-gradient(currentColor 1px, transparent 1px),
+    linear-gradient(90deg, currentColor 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.7;
+}
+
+@keyframes waveFlow {
+  0%, 100% { transform: translateY(-50%) scaleY(1); }
+  25% { transform: translateY(-50%) scaleY(2); }
+  75% { transform: translateY(-50%) scaleY(0.5); }
+}
+
+.icon-matrix {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.matrix-grid {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background-image: 
+    linear-gradient(currentColor 1px, transparent 1px),
+    linear-gradient(90deg, currentColor 1px, transparent 1px);
+  background-size: 6px 6px;
+  opacity: 0.8;
+}
+
+.matrix-highlight {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  animation: matrixPulse 2s ease-in-out infinite;
+}
+
+@keyframes matrixPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.mode-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mode-energy {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mode-btn.active .mode-energy {
+  opacity: 1;
+  animation: energyFlow 2s ease-in-out infinite;
+}
+
+@keyframes energyFlow {
+  0%, 100% { transform: translateX(-50%) scaleX(0.5); }
+  50% { transform: translateX(-50%) scaleX(1.5); }
+}
+
+/* === DISPLAY CONTAINER === */
+.display-container {
+  margin-bottom: 2rem;
+}
+
+.display-frame {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,20,0.8)),
+    radial-gradient(circle at center, rgba(0,255,255,0.05), transparent);
+  border: 2px solid rgba(0,255,255,0.3);
+  border-radius: 18px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(15px);
+  box-shadow: 
+    inset 0 0 30px rgba(0,255,255,0.1),
+    0 8px 32px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.hologram-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--hologram-shimmer);
+  opacity: 0.1;
+  animation: hologramFlicker 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hologramFlicker {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--quantum-blue), transparent);
+  animation: scanLineMove 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanLineMove {
+  0%, 100% { transform: translateY(0px); opacity: 0; }
+  50% { transform: translateY(80px); opacity: 1; }
+}
+
+.display-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.tensor-indicators {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tensor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+}
+
+.tensor-dot.active {
+  background: var(--energy-green);
+  box-shadow: 0 0 10px var(--energy-green);
+  animation: tensorPulse 2s ease-in-out infinite;
+}
+
+@keyframes tensorPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+.dimensional-coords {
+  font-family: var(--font-data);
+  letter-spacing: 0.05em;
+  color: var(--stellar-silver);
+}
+
+.display {
+  font-family: var(--font-data);
+  font-size: 3rem;
+  font-weight: 500;
+  text-align: right;
+  color: var(--quantum-blue);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow-x: auto;
+  white-space: nowrap;
+  text-shadow: 0 0 20px rgba(0,255,255,0.6);
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.display-cursor {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 2.5rem;
+  background: var(--quantum-blue);
+  animation: cursorBlink 1.2s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--quantum-blue);
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 0; }
+  51%, 100% { opacity: 1; }
+}
+
+.quantum-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  font-family: var(--font-data);
+  font-size: 0.8rem;
+}
+
+.probability-cloud {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--neural-purple);
+}
+
+.cloud-animation {
+  width: 20px;
+  height: 8px;
+  background: rgba(138,43,226,0.3);
+  border-radius: 50%;
+  animation: cloudShift 3s ease-in-out infinite;
+}
+
+@keyframes cloudShift {
+  0%, 100% { transform: scaleX(1); opacity: 0.3; }
+  50% { transform: scaleX(1.5); opacity: 0.8; }
+}
+
+.uncertainty-principle {
+  color: var(--antimatter-orange);
+  font-style: italic;
+}
+
+.display-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+}
+
+.precision-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.precision-indicator {
+  background: 
+    linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,255,255,0.05)),
+    rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,255,255,0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  font-family: var(--font-data);
+  font-size: 0.65rem;
+  color: var(--quantum-blue);
+  transition: all 0.3s ease;
+}
+
+.precision-label {
+  opacity: 0.7;
+  margin-right: 0.3rem;
+}
+
+.precision-value {
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--quantum-blue);
+}
+
+.spacetime-metrics {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.metric-label {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.2rem;
+}
+
+.calculation-time {
+  color: var(--energy-green);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--energy-green);
+}
+
+/* === CALCULATOR MODES === */
+.calculator-mode {
+  display: none;
+  position: relative;
+}
+
+.calculator-mode.active {
+  display: block;
+}
+
+.mode-ambient-glow {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: 
+    radial-gradient(ellipse at top left, rgba(0,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(255,0,128,0.1) 0%, transparent 50%);
+  border-radius: 30px;
+  animation: ambientPulse 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.equation-glow {
+  background: 
+    radial-gradient(ellipse at top left, rgba(0,255,65,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(255,255,0,0.1) 0%, transparent 50%);
+}
+
+.graph-glow {
+  background: 
+    radial-gradient(ellipse at top left, rgba(138,43,226,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(255,102,0,0.1) 0%, transparent 50%);
+}
+
+.scientific-glow {
+  background: 
+    radial-gradient(ellipse at top left, rgba(255,0,128,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(0,255,255,0.1) 0%, transparent 50%);
+}
+
+.matrix-glow {
+  background: 
+    radial-gradient(ellipse at top left, rgba(255,102,0,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(138,43,226,0.1) 0%, transparent 50%);
+}
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* === BUTTON SYSTEM === */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.3), rgba(20,20,35,0.3)),
+    radial-gradient(circle at center, rgba(0,255,255,0.03), transparent);
+  border: 1px solid rgba(0,255,255,0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.buttons::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--energy-pulse);
+  opacity: 0.1;
+  animation: energyFlow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background: transparent;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+.btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* === BUTTON CORE SYSTEM === */
+.btn-core {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: 
+    linear-gradient(135deg, rgba(10,10,20,0.9), rgba(20,20,40,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(0,255,255,0.1), transparent);
+  border: 1px solid rgba(0,255,255,0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn:hover .btn-core {
+  border-color: rgba(0,255,255,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(0,255,255,0.1),
+    0 0 20px rgba(0,255,255,0.3);
+}
+
+.btn-energy-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--quantum-field);
+  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.btn:hover .btn-energy-field {
+  opacity: 0.3;
+}
+
+.btn-symbol {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-quantum);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cosmic-white);
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.btn:hover .btn-symbol {
+  color: var(--quantum-blue);
+  text-shadow: 0 0 15px var(--quantum-blue);
+  transform: scale(1.1);
+}
+
+.btn-particle-trail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--quantum-blue);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px var(--quantum-blue);
+}
+
+.btn:hover .btn-particle-trail {
+  opacity: 1;
+  animation: particleTrail 2s ease-in-out infinite;
+}
+
+@keyframes particleTrail {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -200%) scale(0.5); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* === SPECIALIZED BUTTON TYPES === */
+.operator-core {
+  background: 
+    linear-gradient(135deg, rgba(20,10,30,0.9), rgba(40,20,50,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(255,0,128,0.1), transparent);
+  border-color: rgba(255,0,128,0.3);
+}
+
+.btn-operator:hover .operator-core {
+  border-color: rgba(255,0,128,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(255,0,128,0.1),
+    0 0 20px rgba(255,0,128,0.3);
+}
+
+.btn-operator:hover .btn-symbol {
+  color: var(--plasma-pink);
+  text-shadow: 0 0 15px var(--plasma-pink);
+}
+
+.operator-trail {
+  background: var(--plasma-pink);
+  box-shadow: 0 0 10px var(--plasma-pink);
+}
+
+.function-core {
+  background: 
+    linear-gradient(135deg, rgba(10,20,10,0.9), rgba(20,40,20,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(0,255,65,0.1), transparent);
+  border-color: rgba(0,255,65,0.3);
+}
+
+.btn-function:hover .function-core {
+  border-color: rgba(0,255,65,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(0,255,65,0.1),
+    0 0 20px rgba(0,255,65,0.3);
+}
+
+.btn-function:hover .btn-symbol {
+  color: var(--energy-green);
+  text-shadow: 0 0 15px var(--energy-green);
+}
+
+.function-trail {
+  background: var(--energy-green);
+  box-shadow: 0 0 10px var(--energy-green);
+}
+
+.variable-core {
+  background: 
+    linear-gradient(135deg, rgba(20,10,20,0.9), rgba(40,20,40,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(138,43,226,0.1), transparent);
+  border-color: rgba(138,43,226,0.3);
+}
+
+.btn-variable:hover .variable-core {
+  border-color: rgba(138,43,226,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(138,43,226,0.1),
+    0 0 20px rgba(138,43,226,0.3);
+}
+
+.btn-variable:hover .btn-symbol {
+  color: var(--neural-purple);
+  text-shadow: 0 0 15px var(--neural-purple);
+}
+
+.variable-trail {
+  background: var(--neural-purple);
+  box-shadow: 0 0 10px var(--neural-purple);
+}
+
+.complex-core {
+  background: 
+    linear-gradient(135deg, rgba(20,15,10,0.9), rgba(40,30,20,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(255,102,0,0.1), transparent);
+  border-color: rgba(255,102,0,0.3);
+}
+
+.btn-complex:hover .complex-core {
+  border-color: rgba(255,102,0,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(255,102,0,0.1),
+    0 0 20px rgba(255,102,0,0.3);
+}
+
+.btn-complex:hover .btn-symbol {
+  color: var(--antimatter-orange);
+  text-shadow: 0 0 15px var(--antimatter-orange);
+}
+
+.complex-trail {
+  background: var(--antimatter-orange);
+  box-shadow: 0 0 10px var(--antimatter-orange);
+}
+
+.clear-core {
+  background: 
+    linear-gradient(135deg, rgba(30,10,10,0.9), rgba(50,20,20,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(255,0,0,0.1), transparent);
+  border-color: rgba(255,0,0,0.3);
+}
+
+.btn-clear:hover .clear-core {
+  border-color: rgba(255,0,0,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(255,0,0,0.1),
+    0 0 20px rgba(255,0,0,0.3);
+}
+
+.btn-clear:hover .btn-symbol {
+  color: #ff4444;
+  text-shadow: 0 0 15px #ff4444;
+}
+
+.btn-warning-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(255,0,0,0.3), transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.btn-clear:hover .btn-warning-glow {
+  opacity: 1;
+  animation: warningPulse 2s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+}
+
+.equals-core {
+  background: 
+    linear-gradient(135deg, rgba(10,20,30,0.9), rgba(20,40,60,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(0,255,255,0.2), transparent);
+  border-color: rgba(0,255,255,0.5);
+}
+
+.btn-equals:hover .equals-core {
+  border-color: rgba(0,255,255,0.8);
+  box-shadow: 
+    inset 0 0 30px rgba(0,255,255,0.2),
+    0 0 30px rgba(0,255,255,0.4);
+}
+
+.btn-equals:hover .btn-symbol {
+  color: var(--quantum-blue);
+  text-shadow: 0 0 20px var(--quantum-blue);
+  font-size: 1.3rem;
+}
+
+.solve-core {
+  background: 
+    linear-gradient(135deg, rgba(15,25,15,0.9), rgba(30,50,30,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(0,255,65,0.2), transparent);
+  border-color: rgba(0,255,65,0.5);
+}
+
+.btn-solve:hover .solve-core {
+  border-color: rgba(0,255,65,0.8);
+  box-shadow: 
+    inset 0 0 30px rgba(0,255,65,0.2),
+    0 0 30px rgba(0,255,65,0.4);
+}
+
+.btn-solve:hover .btn-symbol {
+  color: var(--energy-green);
+  text-shadow: 0 0 20px var(--energy-green);
+}
+
+.btn-quantum-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  background: 
+    radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(0,255,255,0.1) 30%, transparent 70%),
+    radial-gradient(circle, rgba(0,255,65,0.1) 0%, transparent 50%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.btn-equals:hover .btn-quantum-burst,
+.btn-solve:hover .btn-quantum-burst {
+  opacity: 1;
+  animation: quantumBurst 3s ease-in-out infinite;
+}
+
+@keyframes quantumBurst {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.5) rotate(180deg); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(0.5) rotate(360deg); opacity: 0.8; }
+}
+
+/* === TRIGONOMETRIC FUNCTIONS === */
+.trig-core {
+  background: 
+    linear-gradient(135deg, rgba(20,5,25,0.9), rgba(40,10,50,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(255,255,0,0.1), transparent);
+  border-color: rgba(255,255,0,0.3);
+}
+
+.btn-trig:hover .trig-core {
+  border-color: rgba(255,255,0,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(255,255,0,0.1),
+    0 0 20px rgba(255,255,0,0.3);
+}
+
+.btn-trig:hover .btn-symbol {
+  color: var(--photon-yellow);
+  text-shadow: 0 0 15px var(--photon-yellow);
+}
+
+.trig-trail {
+  background: var(--photon-yellow);
+  box-shadow: 0 0 10px var(--photon-yellow);
+}
+
+/* === GRAPHING MODE SPECIFIC === */
+.graph-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,20,0.8)),
+    radial-gradient(circle at center, rgba(138,43,226,0.05), transparent);
+  border: 2px solid rgba(138,43,226,0.3);
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+}
+
+.graph-matrix-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(138,43,226,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(138,43,226,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: matrixShift 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes matrixShift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(10px, 10px); opacity: 0.6; }
+}
+
+#graph-canvas {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.graph-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,35,0.8)),
+    radial-gradient(circle at center, rgba(138,43,226,0.1), transparent);
+  border: 1px solid rgba(138,43,226,0.3);
+  border-radius: 10px;
+  padding: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.control-interface {
+  position: relative;
+}
+
+.holographic-ui {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  pointer-events: none;
+}
+
+.ui-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neural-purple), transparent);
+  animation: uiScan 4s ease-in-out infinite;
+}
+
+@keyframes uiScan {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.ui-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--neural-purple);
+  border-right: 2px solid var(--neural-purple);
+  opacity: 0.6;
+}
+
+.graph-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: var(--font-data);
+  font-size: 0.8rem;
+}
+
+.domain-display,
+.range-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coord-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.7rem;
+}
+
+.domain,
+.range {
+  color: var(--neural-purple);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--neural-purple);
+}
+
+#graph-display {
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,20,0.8)),
+    radial-gradient(circle at center, rgba(138,43,226,0.05), transparent);
+  border: 2px solid rgba(138,43,226,0.3);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  font-family: var(--font-data);
+  font-size: 1.8rem;
+  color: var(--neural-purple);
+  text-shadow: 0 0 15px rgba(138,43,226,0.6);
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+}
+
+.function-prefix {
+  color: rgba(255,255,255,0.7);
+  margin-right: 0.5rem;
+}
+
+.function-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--neural-purple);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.graph-core {
+  background: 
+    linear-gradient(135deg, rgba(20,5,25,0.9), rgba(40,10,50,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(138,43,226,0.2), transparent);
+  border-color: rgba(138,43,226,0.5);
+}
+
+.btn-graph:hover .graph-core {
+  border-color: rgba(138,43,226,0.8);
+  box-shadow: 
+    inset 0 0 30px rgba(138,43,226,0.2),
+    0 0 30px rgba(138,43,226,0.4);
+}
+
+.btn-graph:hover .btn-symbol {
+  color: var(--neural-purple);
+  text-shadow: 0 0 20px var(--neural-purple);
+}
+
+.control-core {
+  background: 
+    linear-gradient(135deg, rgba(15,15,25,0.9), rgba(30,30,50,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(192,192,192,0.1), transparent);
+  border-color: rgba(192,192,192,0.3);
+}
+
+.btn-control:hover .control-core {
+  border-color: rgba(192,192,192,0.6);
+  box-shadow: 
+    inset 0 0 20px rgba(192,192,192,0.1),
+    0 0 20px rgba(192,192,192,0.3);
+}
+
+.btn-control:hover .btn-symbol {
+  color: var(--stellar-silver);
+  text-shadow: 0 0 15px var(--stellar-silver);
+}
+
+.control-trail {
+  background: var(--stellar-silver);
+  box-shadow: 0 0 10px var(--stellar-silver);
+}
+
+/* === MATRICES MODE SPECIFIC === */
+.matrix-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.control-panel {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,35,0.8)),
+    radial-gradient(circle at center, rgba(255,102,0,0.05), transparent);
+  border: 1px solid rgba(255,102,0,0.3);
+  border-radius: 10px;
+  padding: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.panel-glow {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(45deg, var(--antimatter-orange), transparent, var(--antimatter-orange));
+  border-radius: 10px;
+  opacity: 0.3;
+  animation: panelGlow 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes panelGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+select {
+  background: transparent;
+  border: none;
+  color: var(--antimatter-orange);
+  font-family: var(--font-data);
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  outline: none;
+  cursor: pointer;
+}
+
+select option {
+  background: var(--deep-space);
+  color: var(--antimatter-orange);
+}
+
+.matrix-input {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(0,0,0,0.8), rgba(10,10,20,0.8)),
+    radial-gradient(circle at center, rgba(255,102,0,0.05), transparent);
+  border: 2px solid rgba(255,102,0,0.3);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(15px);
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.matrix-border {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--antimatter-orange), transparent, var(--antimatter-orange));
+  border-radius: 15px;
+  opacity: 0.3;
+  animation: matrixBorderFlow 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes matrixBorderFlow {
+  0%, 100% { background-position: 0% 50%; opacity: 0.3; }
+  50% { background-position: 100% 50%; opacity: 0.6; }
+}
+
+.matrix-cell {
+  width: 60px;
+  height: 40px;
+  background: 
+    linear-gradient(135deg, rgba(10,10,20,0.9), rgba(20,20,40,0.9)),
+    radial-gradient(circle at center, rgba(255,102,0,0.1), transparent);
+  border: 1px solid rgba(255,102,0,0.3);
+  border-radius: 8px;
+  text-align: center;
+  font-family: var(--font-data);
+  font-size: 1rem;
+  color: var(--antimatter-orange);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.matrix-cell:focus {
+  border-color: rgba(255,102,0,0.6);
+  box-shadow: 
+    inset 0 0 15px rgba(255,102,0,0.1),
+    0 0 15px rgba(255,102,0,0.3);
+  outline: none;
+}
+
+.matrix-core {
+  background: 
+    linear-gradient(135deg, rgba(25,10,5,0.9), rgba(50,20,10,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(255,102,0,0.2), transparent);
+  border-color: rgba(255,102,0,0.5);
+}
+
+.btn-matrix:hover .matrix-core {
+  border-color: rgba(255,102,0,0.8);
+  box-shadow: 
+    inset 0 0 25px rgba(255,102,0,0.2),
+    0 0 25px rgba(255,102,0,0.4);
+}
+
+.btn-matrix:hover .btn-symbol {
+  color: var(--antimatter-orange);
+  text-shadow: 0 0 18px var(--antimatter-orange);
+}
+
+.matrix-trail {
+  background: var(--antimatter-orange);
+  box-shadow: 0 0 12px var(--antimatter-orange);
+}
+
+.calculate-core {
+  background: 
+    linear-gradient(135deg, rgba(15,25,15,0.9), rgba(30,50,30,0.9)),
+    radial-gradient(circle at 30% 30%, rgba(0,255,65,0.2), transparent);
+  border-color: rgba(0,255,65,0.5);
+}
+
+.btn-calculate:hover .calculate-core {
+  border-color: rgba(0,255,65,0.8);
+  box-shadow: 
+    inset 0 0 30px rgba(0,255,65,0.2),
+    0 0 30px rgba(0,255,65,0.4);
+}
+
+.btn-calculate:hover .btn-symbol {
+  color: var(--energy-green);
+  text-shadow: 0 0 20px var(--energy-green);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  #calculator {
+    width: 95vw;
+    margin: 1rem auto;
+    padding: 1.5rem;
+  }
+
+  .calculator-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .calculator-title {
+    font-size: 2rem;
+  }
+
+  .quantum-signature {
+    top: -10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .dna-helix {
+    width: 15px;
+    height: 30px;
+  }
+
+  .orbit-ring {
+    width: 15px;
+    height: 15px;
+    top: 7px;
+    left: 7px;
+  }
+
+  .header-constellation {
+    top: -5px;
+    right: 10px;
+    width: 40px;
+    height: 30px;
+  }
+
+  .constellation-dot {
+    width: 2px;
+    height: 2px;
+  }
+
+  .constellation-line {
+    height: 1px;
+  }
+
+  .power-indicator {
+    gap: 0.5rem;
+  }
+
+  .quantum-core {
+    width: 25px;
+    height: 25px;
+  }
+
+  .core-ring {
+    width: 25px;
+    height: 25px;
+  }
+
+  .core-pulse {
+    width: 8px;
+    height: 8px;
+  }
+
+  .status-label {
+    font-size: 0.6rem;
+  }
+
+  .status-value {
+    font-size: 0.8rem;
+  }
+
+  .frequency-bars {
+    gap: 1px;
+  }
+
+  .freq-bar {
+    width: 2px;
+  }
+
+  .mode-selector {
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .mode-slider {
+    border-radius: 8px;
+  }
+
+  .mode-btn {
+    padding: 0.8rem 0.5rem;
+    gap: 0.3rem;
+  }
+
+  .mode-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mode-label {
+    font-size: 0.65rem;
+  }
+
+  .display-frame {
+    padding: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .display {
+    font-size: 2.2rem;
+    min-height: 60px;
+  }
+
+  .display-cursor {
+    height: 2rem;
+  }
+
+  .display-header {
+    font-size: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .tensor-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .quantum-readout {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+  }
+
+  .probability-cloud {
+    font-size: 0.7rem;
+  }
+
+  .uncertainty-principle {
+    font-size: 0.7rem;
+  }
+
+  .precision-indicator {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.6rem;
+    border-radius: 6px;
+  }
+
+  .spacetime-metrics {
+    gap: 0.8rem;
+  }
+
+  .metric-label {
+    font-size: 0.55rem;
+  }
+
+  .calculation-time {
+    font-size: 0.7rem;
+  }
+
+  .buttons {
+    grid-template-columns: repeat(4, 1fr); /* Adjust grid for smaller screens */
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .btn {
+    height: 60px;
+    border-radius: 12px;
+  }
+
+  .btn-core {
+    border-radius: 10px;
+  }
+
+  .btn-symbol {
+    font-size: 1rem;
+  }
+
+  .btn-equals:hover .btn-symbol,
+  .btn-solve:hover .btn-symbol {
+    font-size: 1.1rem;
+  }
+
+  .graph-container {
+    height: 300px;
+    margin-bottom: 1.5rem;
+  }
+
+  .graph-controls {
+    top: 10px;
+    right: 10px;
+    padding: 0.8rem;
+  }
+
+  .graph-info {
+    font-size: 0.7rem;
+    gap: 0.3rem;
+  }
+
+  .coord-label {
+    font-size: 0.6rem;
+  }
+
+  #graph-display {
+    padding: 1rem;
+    font-size: 1.5rem;
+    min-height: 70px;
+  }
+
   .matrix-controls {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
   }
-  
-  .matrix-controls select {
-    flex: 1;
-    margin: 0 5px;
-    padding: 8px;
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+
+  .control-panel {
+    padding: 0.4rem;
   }
-  
+
+  select {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+
   .matrix-input {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    padding: 1.5rem;
+    gap: 0.8rem;
+  }
+
+  .matrix-cell {
+    width: 50px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #calculator {
+    margin: 0.5rem auto;
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .calculator-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  .quantum-signature,
+  .header-constellation {
+    display: none; /* Hide complex header elements on very small screens */
+  }
+
+  .power-indicator {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .mode-selector {
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 5px;
-    margin-bottom: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    border-radius: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
   }
-  
-  .matrix-input input {
-    width: 100%;
-    padding: 8px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 3px;
+
+  .mode-slider {
+    display: none; /* Hide slider on very small screens, rely on active state */
   }
-  
-  /* Responsive Design */
-  @media (max-width: 650px) {
-    #calculator {
-      width: 95%;
-      margin: 20px auto;
-    }
-    
-    .buttons {
-      grid-template-columns: repeat(5, 1fr);
-    }
-    
-    .mode-selector {
-      flex-wrap: wrap;
-    }
-    
-    .mode-btn {
-      flex: 1 0 45%;
-      margin: 2px;
-    }
+
+  .mode-btn {
+    flex: none;
+    width: calc(33% - 5px); /* 3 buttons per row */
+    padding: 0.8rem 0.2rem;
+    font-size: 0.6rem;
+    border-radius: 8px;
   }
+
+  .mode-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .mode-energy {
+    display: none; /* Hide energy bar for mode buttons on very small screens */
+  }
+
+  .display-frame {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .display {
+    font-size: 1.8rem;
+    min-height: 50px;
+  }
+
+  .display-cursor {
+    height: 1.5rem;
+  }
+
+  .display-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .dimensional-coords {
+    font-size: 0.55rem;
+  }
+
+  .quantum-readout {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .precision-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .spacetime-metrics {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+  }
+
+  .buttons {
+    grid-template-columns: repeat(3, 1fr); /* 3 buttons per row on smallest screens */
+    gap: 0.6rem;
+    padding: 0.8rem;
+    border-radius: 15px;
+  }
+
+  .btn {
+    height: 55px;
+    border-radius: 10px;
+  }
+
+  .btn-symbol {
+    font-size: 0.9rem;
+  }
+
+  .btn-equals .btn-symbol,
+  .btn-solve .btn-symbol {
+    font-size: 1rem;
+  }
+
+  .graph-container {
+    height: 250px;
+  }
+
+  .graph-controls {
+    top: 5px;
+    right: 5px;
+    padding: 0.5rem;
+  }
+
+  .graph-info {
+    font-size: 0.6rem;
+  }
+
+  #graph-display {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    min-height: 60px;
+  }
+
+  .function-prefix {
+    margin-right: 0.3rem;
+  }
+
+  .matrix-input {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .matrix-cell {
+    width: 45px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+}
+
+.developer-credit {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.8rem;
+    font-family: 'Poppins', sans-serif;
+    color: #e0e0e0;
+    opacity: 0.75;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 100;
+    transition: all 0.3s ease;
+    letter-spacing: 0.4px;
+}
+
+.developer-credit:hover {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 6px 18px rgba(255, 193, 111, 0.35);
+}
+
+.explorer-signature {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: #f3f3f3;
+    letter-spacing: 0.5px;
+}
+
+.eccentric {
+    font-weight: 700;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: linear-gradient(90deg, #fcb045, #fd1d1d, #833ab4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    background-size: 200% auto;
+    animation: shimmerText 4s ease infinite;
+}

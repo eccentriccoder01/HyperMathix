@@ -1,7 +1,6 @@
 const canvas = document.getElementById('graph-canvas');
 const ctx = canvas.getContext('2d');
 
-// Resize canvas dynamically
 function resizeCanvas() {
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
@@ -9,39 +8,32 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Graph state
 let graphExpr = '';
-let zoom = 40; // pixels per unit
+let zoom = 40;
 let originX = canvas.width / 2;
 let originY = canvas.height / 2;
 
-// Draw axes
 function drawAxes() {
   ctx.strokeStyle = 'rgba(255,255,255,0.4)';
   ctx.lineWidth = 1;
 
-  // X Axis
   ctx.beginPath();
   ctx.moveTo(0, originY);
   ctx.lineTo(canvas.width, originY);
   ctx.stroke();
 
-  // Y Axis
   ctx.beginPath();
   ctx.moveTo(originX, 0);
   ctx.lineTo(originX, canvas.height);
   ctx.stroke();
 }
 
-// Convert screen coordinates to graph coordinates
 function screenToGraph(x, y) {
   return [
     (x - originX) / zoom,
     (originY - y) / zoom
   ];
 }
-
-// Evaluate expression
 function safeEval(expr, x) {
   try {
     const replaced = expr
@@ -51,7 +43,7 @@ function safeEval(expr, x) {
       .replace(/ln/g, 'Math.log')
       .replace(/√/g, 'Math.sqrt')
       .replace(/e\^/g, 'Math.exp')
-      .replace(/(\d|\))\s*\^(\d|\()/g, '$1**$2') // Replace ^ with **
+      .replace(/(\d|\))\s*\^(\d|\()/g, '$1**$2') 
       .replace(/x/g, `(${x})`);
 
     return eval(replaced);
@@ -60,7 +52,6 @@ function safeEval(expr, x) {
   }
 }
 
-// Plot the expression
 function plotGraph(expr) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawAxes();
@@ -90,7 +81,6 @@ function plotGraph(expr) {
   ctx.stroke();
 }
 
-// Handle button clicks
 let currentInput = '';
 
 document.querySelectorAll('#graphing-mode button').forEach(button => {
@@ -123,11 +113,9 @@ document.querySelectorAll('#graphing-mode button').forEach(button => {
       originY -= 20;
       plotGraph(graphExpr);
     } else {
-      // Insert function or value
       currentInput += value;
     }
   });
 });
 
-// Draw initial empty graph
 drawAxes();
