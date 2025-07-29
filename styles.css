@@ -7,10 +7,9 @@
   --deep-space: #0a0a0f;
   --quantum-blue: #00ffff;
   --plasma-pink: #ff0080;
-  --energy-green: #00ff41;
   --neural-purple: #8a2be2;
   --antimatter-orange: #ff6600;
-  --photon-yellow: #ffff00;
+  --photon-indigo: #2200ff;
   --cosmic-white: #ffffff;
   --stellar-silver: #c0c0c0;
   
@@ -68,8 +67,8 @@ body {
   background-image: 
     radial-gradient(2px 2px at 20px 30px, var(--quantum-blue), transparent),
     radial-gradient(2px 2px at 40px 70px, var(--plasma-pink), transparent),
-    radial-gradient(1px 1px at 90px 40px, var(--energy-green), transparent),
-    radial-gradient(1px 1px at 130px 80px, var(--photon-yellow), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--deep-space), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--photon-indigo), transparent),
     radial-gradient(2px 2px at 160px 30px, var(--neural-purple), transparent);
   background-repeat: repeat;
   background-size: 200px 100px;
@@ -196,7 +195,7 @@ body {
 
 /* === MAIN CALCULATOR CONTAINER === */
 #calculator {
-  width: 900px;
+  width: 1400px;
   max-width: 95vw;
   margin: 2rem auto;
   background: 
@@ -225,7 +224,7 @@ body {
   background: linear-gradient(45deg, 
     var(--quantum-blue), 
     var(--plasma-pink), 
-    var(--energy-green), 
+    var(--deep-space), 
     var(--neural-purple));
   background-size: 400% 400%;
   animation: holographicShift 8s ease infinite;
@@ -256,7 +255,7 @@ body {
 .dna-helix {
   width: 20px;
   height: 40px;
-  border: 2px solid var(--energy-green);
+  border: 2px solid var(--deep-space);
   border-radius: 50%;
   transform: rotate(45deg);
   animation: helixRotate 4s linear infinite;
@@ -344,7 +343,7 @@ body {
 }
 
 .title-main {
-  background: linear-gradient(45deg, var(--energy-green), var(--photon-yellow));
+  background: linear-gradient(45deg, var(--photon-indigo), var(--neural-purple));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -432,9 +431,9 @@ body {
 .status-value {
   font-family: var(--font-quantum);
   font-size: 0.9rem;
-  color: var(--energy-green);
+  color: var(--quantum-blue);
   font-weight: 700;
-  text-shadow: 0 0 10px var(--energy-green);
+  text-shadow: 0 0 10px var(--quantum-blue);
 }
 
 .frequency-bars {
@@ -445,7 +444,7 @@ body {
 
 .freq-bar {
   width: 3px;
-  background: var(--energy-green);
+  background: var(--antimatter-orange);
   animation: frequencyPulse 1.5s ease-in-out infinite;
 }
 
@@ -832,8 +831,8 @@ body {
 }
 
 .tensor-dot.active {
-  background: var(--energy-green);
-  box-shadow: 0 0 10px var(--energy-green);
+  background: var(--deep-space);
+  box-shadow: 0 0 10px var(--deep-space);
   animation: tensorPulse 2s ease-in-out infinite;
 }
 
@@ -973,9 +972,9 @@ body {
 }
 
 .calculation-time {
-  color: var(--energy-green);
+  color: var(--deep-space);
   font-weight: 600;
-  text-shadow: 0 0 8px var(--energy-green);
+  text-shadow: 0 0 8px var(--deep-space);
 }
 
 /* === CALCULATOR MODES === */
@@ -1208,13 +1207,13 @@ body {
 }
 
 .btn-function:hover .btn-symbol {
-  color: var(--energy-green);
-  text-shadow: 0 0 15px var(--energy-green);
+  color: var(--deep-space);
+  text-shadow: 0 0 15px var(--deep-space);
 }
 
 .function-trail {
-  background: var(--energy-green);
-  box-shadow: 0 0 10px var(--energy-green);
+  background: var(--deep-space);
+  box-shadow: 0 0 10px var(--deep-space);
 }
 
 .variable-core {
@@ -1343,8 +1342,8 @@ body {
 }
 
 .btn-solve:hover .btn-symbol {
-  color: var(--energy-green);
-  text-shadow: 0 0 20px var(--energy-green);
+  color: var(--deep-space);
+  text-shadow: 0 0 20px var(--deep-space);
 }
 
 .btn-quantum-burst {
@@ -1391,13 +1390,13 @@ body {
 }
 
 .btn-trig:hover .btn-symbol {
-  color: var(--photon-yellow);
-  text-shadow: 0 0 15px var(--photon-yellow);
+  color: var(--photon-indigo);
+  text-shadow: 0 0 15px var(--photon-indigo);
 }
 
 .trig-trail {
-  background: var(--photon-yellow);
-  box-shadow: 0 0 10px var(--photon-yellow);
+  background: var(--photon-indigo);
+  box-shadow: 0 0 10px var(--photon-indigo);
 }
 
 /* === GRAPHING MODE SPECIFIC === */
@@ -1746,11 +1745,18 @@ select option {
 }
 
 .btn-calculate:hover .btn-symbol {
-  color: var(--energy-green);
-  text-shadow: 0 0 20px var(--energy-green);
+  color: var(--deep-space);
+  text-shadow: 0 0 20px var(--deep-space);
 }
 
 /* === RESPONSIVE DESIGN === */
+
+@media (min-width: 1200px) {
+  .buttons {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   #calculator {
     width: 95vw;

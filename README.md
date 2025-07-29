@@ -43,7 +43,9 @@ Experience HyperMathix live here:
 
 ## 📸 Screenshots
 
-<div align="center"><img src="App.png"/></div>
+For a walkthrough of HyperMathix, check out this GIF:
+
+![Walkthrough GIF](App.gif)
 
 ---
 
