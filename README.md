@@ -12,7 +12,7 @@ HyperMathix is driven by the core mission of providing a dynamic and engaging pl
 
 - Provide a comprehensive tool for various mathematical operations, from basic to advanced.
 - Offer full support for complex number arithmetic and functions, a key differentiator.
-- Visualize functions dynamically through an interactive graphing mode.
+- Visualise functions dynamically through an interactive graphing mode.
 - Solve equations, including linear and quadratic forms, with real and complex roots.
 - Deliver an immersive and unique user experience through its quantum-themed interface.
 
@@ -64,7 +64,7 @@ For a walkthrough of HyperMathix, check out this GIF:
 * **Keyboard Support:** The scientific mode includes comprehensive keyboard input handling, allowing users to type expressions directly, including numbers, operators, and special functions.
 
 ### 💡 Core Functionalities (Modes)
-HyperMathix organizes its capabilities into distinct modes, accessible via an intuitive mode selector.
+HyperMathix organises its capabilities into distinct modes, accessible via an intuitive mode selector.
 
 #### Basic (Arithmetic) Mode
 This mode provides fundamental arithmetic operations along with support for complex numbers and common functions.
